@@ -23,8 +23,14 @@ class Sidebar extends React.Component {
 	}
 
 	handleChannelClick(channelId) {
-		if(this.props.selectedChannelId && this.props.selectedChannelId !== channelId){
-			console.log("channel was clicked!");
+		console.log("channel was clicked!");
+		if (this.props.selectedChannelId == null) {
+			this.props.selectChannel(channelId);
+		}
+		if (
+			this.props.selectedChannelId &&
+			this.props.selectedChannelId !== channelId
+		) {
 			this.props.selectChannel(channelId);
 		}
 	}
@@ -57,8 +63,11 @@ class Sidebar extends React.Component {
 				{/* Connect to db and list all the channels*/}
 				{/* SidebarOptionn */}
 				{this.props.channels.map((channel) => (
-					<div onClick={() => this.handleChannelClick(channel.id)}>
-						<SidebarOption key={channel.id} title={channel.title} />
+					<div
+						key={channel.id}
+						onClick={() => this.handleChannelClick(channel.id)}
+					>
+						<SidebarOption title={channel.title} />
 					</div>
 				))}
 			</div>
