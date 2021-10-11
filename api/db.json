@@ -1,0 +1,56 @@
+{
+	"channels": [
+		{
+			"title": "My channel",
+			"description": "this is my first channel",
+			"id": 1
+		},
+		{
+			"title": "Some other channel",
+			"description": "this is another channel",
+			"id": 2
+		}
+	],
+	"messages": [
+		{
+			"message": "hello",
+			"timestamp": "28/09/2021 - 22:40",
+			"user": "Clement Poirier",
+			"channelId": 1,
+			"id": 1,
+			"userImage": "https://st4.depositphotos.com/1011077/24292/i/600/depositphotos_242924004-stock-photo-welsh-corgi-dog-playing-in.jpg"
+		},
+		{
+			"message": "ça roule?",
+			"timestamp": "28/09/2021 - 22:41",
+			"user": "Hugo Lebreton",
+			"channelId": 1,
+			"id": 2,
+			"userImage": "https://st4.depositphotos.com/1011077/24292/i/600/depositphotos_242924004-stock-photo-welsh-corgi-dog-playing-in.jpg"
+		},
+		{
+			"message": "Nickel et toi?",
+			"timestamp": "28/09/2021 - 22:42",
+			"user": "Clement Poirier",
+			"channelId": 1,
+			"id": 3,
+			"userImage": "https://st4.depositphotos.com/1011077/24292/i/600/depositphotos_242924004-stock-photo-welsh-corgi-dog-playing-in.jpg"
+		},
+		{
+			"message": "Hola, como estas?",
+			"timestamp": "29/09/2021 - 22:42",
+			"user": "Clement Poirier",
+			"channelId": 2,
+			"id": 4,
+			"userImage": "https://st4.depositphotos.com/1011077/24292/i/600/depositphotos_242924004-stock-photo-welsh-corgi-dog-playing-in.jpg"
+		},
+		{
+			"message": "Muy bien amigo!",
+			"timestamp": "29/09/2021 - 22:42",
+			"user": "Antonio Banderas",
+			"channelId": 2,
+			"id": 5,
+			"userImage": "https://st4.depositphotos.com/1011077/24292/i/600/depositphotos_242924004-stock-photo-welsh-corgi-dog-playing-in.jpg"
+		}
+	]
+}
