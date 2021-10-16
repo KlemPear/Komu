@@ -4,27 +4,54 @@ const makeValidation = require("@withvoid/make-validation");
 const User = require("../models/User");
 const { USER_TYPES } = require("../models/User");
 
-module.exports.onGetAllUsers = async (req, res, next) => {};
-module.exports.onGetUserById = async (req, res, next) => {};
-
-module.exports.onCreateUser = async (req, res, next) => {
+module.exports.onGetAllUsers = async (req, res, next) => {
 	try {
-		// const validation = makeValidation((types) => ({
-		// 	payload: req.body,
-		// 	checks: {
-		// 		firstName: { type: types.string },
-		// 		lastName: { type: types.string },
-		// 		type: { type: types.enum, options: { enum: USER_TYPES } },
-		// 	},
-		// }));
-		// if (!validation.success) return res.status(400).json(validation);
+		const users = await User.find();
+		return res.status(200).json({ success: true, users });
+	} catch (error) {
+		return res.status(500).json({ success: false, error: error });
+	}
+};
 
-		const { firstName, lastName, type } = req.body;
-		const user = await User.createUser(firstName, lastName, type);
+module.exports.onGetUserById = async (req, res, next) => {
+	try {
+		const user = await User.findById(req.params.id);
+		if (!user) {
+			throw { error: "No user with this id found" };
+		}
 		return res.status(200).json({ success: true, user });
 	} catch (error) {
 		return res.status(500).json({ success: false, error: error });
 	}
 };
 
-module.exports.onDeleteUserById = async (req, res, next) => {};
+module.exports.onCreateUser = async (req, res, next) => {
+	try {
+		// Do validation here with Joi
+		const { firstName, lastName, type } = req.body;
+		const user = await User.create({ firstName, lastName, type });
+		return res.status(200).json({ success: true, user });
+	} catch (error) {
+		return res.status(500).json({ success: false, error: error });
+	}
+};
+
+module.exports.onDeleteUserById = async (req, res, next) => {
+	try {
+		const user = await User.deleteOne({ _id: req.params.id });
+		if (user.deletedCount === 0) {
+			return res
+				.status(404)
+				.json({
+					success: false,
+					message: "User not found. Nothing was deleted.",
+				});
+		}
+		return res.status(200).json({
+			success: true,
+			message: `Deleted a count of ${user.deletedCount} user.`,
+		});
+	} catch (error) {
+		return res.status(500).json({ success: false, error: error });
+	}
+};
