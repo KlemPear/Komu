@@ -3,16 +3,18 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
+const socketio = require("socket.io");
+const WebSockets = require("./utils/WebSockets");
 // routes
-const indexRouter = require("../routes/index");
-const userRouter = require("../routes/user");
-const chatRoomRouter = require("../routes/chatRoom");
-const deleteRouter = require("../routes/delete");
+const indexRouter = require("./routes/index");
+const userRouter = require("./routes/user");
+const chatRoomRouter = require("./routes/chatRoom");
+const deleteRouter = require("./routes/delete");
 // middlewares
-const { decode } = require("../middlewares/jwt");
+const { decode } = require("./middlewares/jwt");
 // mongo connection start mongoDb server
 // sudo mongod --dbpath=/home/clem/Git/Komu/backend/chat_server/data/db
-const mongoDbSetUp = require("../config/mongo");
+const mongoDbSetUp = require("./config/mongo");
 
 mongoDbSetUp.on("error", console.error.bind(console, "connection error:"));
 mongoDbSetUp.once("open", () => {
@@ -29,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/users", userRouter);
-app.use("/room", decode, chatRoomRouter);
+app.use("/messages", decode, chatRoomRouter);
 app.use("/delete", deleteRouter);
 
 /** catch 404 and forward to error handler */
@@ -42,6 +44,19 @@ app.use("*", (req, res) => {
 
 /** Create HTTP server. */
 const server = http.createServer(app);
+
+/** Create socket connection */
+global.io = socketio(server, {
+	cors: {
+		origin: `http://localhost:${port}`,
+		methods: ["GET", "POST"],
+		transports: ["websocket", "polling"],
+		credentials: true,
+	},
+	allowEIO3: true,
+});
+global.io.on('connection', WebSockets.connection);
+
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);
 /** Event listener for HTTP server "listening" event. */
