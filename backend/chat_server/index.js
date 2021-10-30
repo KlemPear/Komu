@@ -9,7 +9,6 @@ const WebSockets = require("./utils/WebSockets");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const chatRoomRouter = require("./routes/chatRoom");
-const deleteRouter = require("./routes/delete");
 // middlewares
 const { decode } = require("./middlewares/jwt");
 // mongo connection start mongoDb server
@@ -31,8 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/users", userRouter);
-app.use("/messages", decode, chatRoomRouter);
-app.use("/delete", deleteRouter);
+app.use("/messages", chatRoomRouter);
 
 /** catch 404 and forward to error handler */
 app.use("*", (req, res) => {
@@ -55,7 +53,7 @@ global.io = socketio(server, {
 	},
 	allowEIO3: true,
 });
-global.io.on('connection', WebSockets.connection);
+global.io.on("connection", WebSockets.connection);
 
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);

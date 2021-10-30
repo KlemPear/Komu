@@ -9,7 +9,8 @@ const ChatRoomSchema = new Schema(
 		},
 		usersId: [
 			{
-				type: String
+				type: Schema.Types.ObjectId,
+				ref: "User",
 			},
 		],
 		name: {

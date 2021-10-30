@@ -9,6 +9,9 @@ router
 	.get("/:komuId/:roomId", chatRoom.getConversationByRoomId)
 	.post("/:komuId/create-chatroom", chatRoom.createChatRoom)
 	.post("/:komuId/:roomId/message", chatRoom.postMessage)
-	.put("/:komuId/:roomId/mark-read", chatRoom.markConversationReadByRoomId);
+	.put("/:komuId/:roomId/mark-read", chatRoom.markConversationReadByRoomId)
+	.put("/:komuId/:roomId/:messageId", chatRoom.editMessage)
+	.delete("/:roomId", chatRoom.deleteRoomById)
+	.delete("/:messageId", chatRoom.deleteMessageById);
 
 module.exports = router;
