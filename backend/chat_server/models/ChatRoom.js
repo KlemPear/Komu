@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 const User = require("./User");
+
 const Schema = mongoose.Schema;
 
 const ChatRoomSchema = new Schema(
 	{
-		komuId: {
-			type: String,
+		komu: {
+			type: Schema.Types.ObjectId,
+			ref: "Komu",
 		},
 		usersId: [
 			{

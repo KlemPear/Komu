@@ -6,23 +6,17 @@ const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema(
 	{
-		// authorUserId: {
-		// 	type: String,
-		// },
 		author: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
+			type: Schema.Types.ObjectId,
+			ref: "User",
+		},
 		text: {
 			type: String,
 		},
-		// chatRoomId: {
-		// 	type: String,
-		// },
 		chatRoom: {
-        type: Schema.Types.ObjectId,
-        ref: 'ChatRoom'
-    },
+			type: Schema.Types.ObjectId,
+			ref: "ChatRoom",
+		},
 		readByUserIds: [{ type: String }],
 	},
 	{

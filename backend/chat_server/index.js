@@ -9,6 +9,7 @@ const WebSockets = require("./utils/WebSockets");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const chatRoomRouter = require("./routes/chatRoom");
+const komuRouter = require("./routes/komu");
 // middlewares
 const { decode } = require("./middlewares/jwt");
 // mongo connection start mongoDb server
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/users", userRouter);
+app.use("/komu", komuRouter);
 app.use("/messages", chatRoomRouter);
 
 /** catch 404 and forward to error handler */
