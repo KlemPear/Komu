@@ -19,7 +19,8 @@ import AddIcon from "@mui/icons-material/Add";
 
 class Sidebar extends React.Component {
 	componentDidMount() {
-		this.props.fetchChannels();
+		const komuId = "1";
+		this.props.fetchChannels(komuId);
 	}
 
 	handleChannelClick(channelId) {
@@ -63,10 +64,10 @@ class Sidebar extends React.Component {
 				{/* SidebarOptionn */}
 				{this.props.channels.map((channel) => (
 					<div
-						key={channel.id}
-						onClick={() => this.handleChannelClick(channel.id)}
+						key={channel._id}
+						onClick={() => this.handleChannelClick(channel._id)}
 					>
-						<SidebarOption title={channel.title} />
+						<SidebarOption title={channel.name} />
 					</div>
 				))}
 			</div>

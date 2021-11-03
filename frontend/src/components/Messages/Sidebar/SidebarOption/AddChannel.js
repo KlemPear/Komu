@@ -1,14 +1,15 @@
 import React from "react";
+import { connect } from "react-redux";
 import Modal from "../../../Modal";
 import { Link } from "react-router-dom";
 import history from "../../../../History";
-
+import NewChannelForm from "../NewChannelForm";
+import { createChannel } from "../../../../actions/index";
 
 class AddChannel extends React.Component {
 	renderActions() {
 		return (
 			<React.Fragment>
-				<button className="ui button primary">Submit</button>
 				<Link to="/Messages" className="ui button">
 					Cancel
 				</Link>
@@ -16,8 +17,15 @@ class AddChannel extends React.Component {
 		);
 	}
 
+	onSubmit = (formValues) => {
+		const komuId = "1";
+		const userId = "086ab3e86504452ba51937e723e7bdeb";
+		const newFormValues = { ...formValues, usersId: [userId] };
+		this.props.createChannel(newFormValues, komuId);
+	};
+
 	renderContent = () => {
-		return "This is where the add channel form will be";
+		return <NewChannelForm onSubmit={this.onSubmit} />;
 	};
 
 	render() {
@@ -32,4 +40,4 @@ class AddChannel extends React.Component {
 	}
 }
 
-export default AddChannel;
+export default connect(null, { createChannel })(AddChannel);

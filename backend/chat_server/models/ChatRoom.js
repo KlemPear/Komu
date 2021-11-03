@@ -9,7 +9,7 @@ const ChatRoomSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Komu",
 		},
-		usersId: [
+		users: [
 			{
 				type: Schema.Types.ObjectId,
 				ref: "User",

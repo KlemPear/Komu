@@ -10,6 +10,7 @@ import {
 } from "./types";
 import channels from "../apis/channels";
 import _ from "lodash";
+import history from "../History";
 
 export const signIn = (userId) => {
 	return {
@@ -33,16 +34,21 @@ export const selectChannel = (channelId) => {
 	};
 };
 
-export const createChannel = (formValues) => async (dispatch, getState) => {
-	const response = await channels.post("/channel", { formValues });
-	dispatch({ type: CREATE_CHANNEL, payload: response.data });
-	// do some programmatic navigation to get the user
-	// back to the main page StreamList
-	//history.push("/");
-};
+export const createChannel =
+	(formValues, komuId) => async (dispatch, getState) => {
+		const response = await channels.post(
+			`/messages/${komuId}/create-chatroom`,
+			formValues
+		);
+		console.log("create channel", response.data);
+		dispatch({ type: CREATE_CHANNEL, payload: response.data });
+		// do some programmatic navigation to get the user
+		// back to the main page StreamList
+		history.push("/Messages");
+	};
 
-export const fetchChannels = () => async (dispatch) => {
-	const response = await channels.get("/channels");
+export const fetchChannels = (komuId) => async (dispatch) => {
+	const response = await channels.get(`/messages/${komuId}/`);
 	dispatch({ type: FETCH_CHANNELS, payload: response.data });
 };
 

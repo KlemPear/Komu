@@ -1,20 +1,28 @@
 const ChatRoom = require("../models/ChatRoom");
 const Message = require("../models/Message");
+const User = require("../models/User");
 
 module.exports.createChatRoom = async (req, res, next) => {
 	try {
+		console.log(req.body);
 		const { komuId } = req.params;
 		const { name, description, usersId } = req.body;
+		const users = [];
+		for (const id of usersId) {
+			user = await User.findById(id);
+			users.push(user);
+		}
 		const newChatRoom = new ChatRoom({
 			komuId: komuId,
 			name: name,
 			description: description,
-			usersId: usersId,
 		});
+		newChatRoom.users = users;
 		await newChatRoom.save();
-		return res.status(200).json({ success: true, newChatRoom });
+		return res.status(200).json(newChatRoom);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		console.log(error);
+		return res.status(500).json(error);
 	}
 };
 
@@ -29,7 +37,7 @@ module.exports.postMessage = async (req, res, next) => {
 		});
 		newMessage.readByUserIds.push(userId);
 		await newMessage.save();
-		return res.status(200).json({ success: true, newMessage });
+		return res.status(200).json(newMessage);
 	} catch (error) {
 		return res.status(500).json({ success: false, error: error });
 	}
@@ -39,7 +47,7 @@ module.exports.getChatRooms = async (req, res, next) => {
 	try {
 		const { komuId } = req.params;
 		const chatRooms = await ChatRoom.find({ komuId: komuId });
-		return res.status(200).json({ success: true, chatRooms });
+		return res.status(200).json(chatRooms);
 	} catch (error) {
 		return res.status(500).json({ success: false, error: error });
 	}
