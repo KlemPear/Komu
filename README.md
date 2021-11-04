@@ -6,7 +6,7 @@ This is the repo for Komu.
 
 open terminal<br />
 navigate to Komu/backend/chat-server<br />
-sudo mongod --dbpath=/home/clem/Git/Komu/backend/chat_server/data/db<br />
+run "sudo mongod --dbpath=/home/clem/Git/Komu/backend/chat_server/data/db"<br />
 
 ## Start the server:
 
