@@ -1,27 +1,26 @@
 const ChatRoom = require("../models/ChatRoom");
 const Message = require("../models/Message");
 const User = require("../models/User");
+const Komu = require("../models/Komu");
 
 module.exports.createChatRoom = async (req, res, next) => {
 	try {
-		console.log(req.body);
+		console.log("params: ", req.params);
+		console.log("body: ", req.body);
 		const { komuId } = req.params;
 		const { name, description, usersId } = req.body;
-		const users = [];
-		for (const id of usersId) {
-			user = await User.findById(id);
-			users.push(user);
-		}
+		const users = await User.findUsersByIds(usersId);
+		const komu = await Komu.findById(komuId);
 		const newChatRoom = new ChatRoom({
-			komuId: komuId,
 			name: name,
 			description: description,
+			users: users,
+			komu: komu
 		});
-		newChatRoom.users = users;
+		console.log("chatroom: ", newChatRoom);
 		await newChatRoom.save();
 		return res.status(200).json(newChatRoom);
 	} catch (error) {
-		console.log(error);
 		return res.status(500).json(error);
 	}
 };
@@ -49,14 +48,16 @@ module.exports.getChatRooms = async (req, res, next) => {
 		const chatRooms = await ChatRoom.find({ komuId: komuId });
 		return res.status(200).json(chatRooms);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		return res.status(500).json(error);
 	}
 };
 
 module.exports.getConversationByRoomId = async (req, res, next) => {
 	try {
 		const { roomId } = req.params;
-		const messages = await Message.find({ chatRoom: roomId }).populate("author");
+		const messages = await Message.find({ chatRoom: roomId }).populate(
+			"author"
+		);
 		return res.status(200).json({ success: true, messages });
 	} catch (error) {
 		return res.status(500).json({ success: false, error: error });

@@ -19,7 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 class Sidebar extends React.Component {
 	componentDidMount() {
-		const komuId = "1";
+		const komuId = "61834ec8c6a1c6b2a87520ae";
 		this.props.fetchChannels(komuId);
 	}
 

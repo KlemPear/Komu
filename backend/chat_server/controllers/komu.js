@@ -1,4 +1,5 @@
 const Komu = require("../models/Komu");
+const User = require("../models/User");
 
 module.exports.getAllKomus = async (req, res, next) => {
 	try {
@@ -21,11 +22,17 @@ module.exports.getKomu = async (req, res, next) => {
 
 module.exports.createKomu = async (req, res, next) => {
 	try {
-		const komu = new Komu(req.body);
+		const { name, description, usersId } = req.body;
+		const users = await User.findUsersByIds(usersId);
+		const komu = new Komu({
+			name: name,
+			description: description,
+			users: users,
+		});
 		await komu.save();
-		return res.status(200).json({ success: true, komu });
+		return res.status(200).json(komu);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		return res.status(500).json(error);
 	}
 };
 

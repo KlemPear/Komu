@@ -23,4 +23,17 @@ const userSchema = new mongoose.Schema(
 	}
 );
 
+userSchema.statics.findUsersByIds = async function (usersId) {
+	try {
+		const users = [];
+		for (const id of usersId) {
+			const user = await this.findById(id);
+			users.push(user);
+		}
+		return users;
+	} catch (error) {
+		throw error;
+	}
+};
+
 module.exports = mongoose.model("User", userSchema);

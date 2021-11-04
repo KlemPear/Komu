@@ -14,7 +14,7 @@ class Messages extends React.Component {
 	selectedChannel() {
 		if (this.props.selectedChannelId) {
 			return _.filter(this.props.channels, {
-				id: this.props.selectedChannelId,
+				_id: this.props.selectedChannelId,
 			})[0];
 		} else return null;
 	}

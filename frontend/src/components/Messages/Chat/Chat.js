@@ -15,18 +15,18 @@ class Chat extends React.Component {
 
 	componentDidMount() {
 		if (this.props.selectedChannel) {
-			this.props.fetchMessages(this.props.selectedChannel.id);
-			this.setState({ currentChannelId: this.props.selectedChannel.id });
+			this.props.fetchMessages(this.props.selectedChannel._id);
+			this.setState({ currentChannelId: this.props.selectedChannel._id });
 		}
 	}
 
 	componentDidUpdate() {
 		if (
 			this.props.selectedChannel &&
-			this.props.selectedChannel.id !== this.state.currentChannelId
+			this.props.selectedChannel._id !== this.state.currentChannelId
 		) {
-			this.props.fetchMessages(this.props.selectedChannel.id);
-			this.setState({ currentChannelId: this.props.selectedChannel.id });
+			this.props.fetchMessages(this.props.selectedChannel._id);
+			this.setState({ currentChannelId: this.props.selectedChannel._id });
 		}
 	}
 
@@ -51,7 +51,7 @@ class Chat extends React.Component {
 				<div className="chat-header">
 					<div className="chat-headerLeft">
 						<h4 className="chat-channelName">
-							<strong>#{this.props.selectedChannel.title}</strong>
+							<strong>#{this.props.selectedChannel.name}</strong>
 							<StarBorderOutlineIcon />
 						</h4>
 					</div>
@@ -65,8 +65,8 @@ class Chat extends React.Component {
 					{this.props.messages ? this.renderMessages() : null}
 				</div>
 				<ChatInput
-					channelName={this.props.selectedChannel.title}
-					channelId={this.props.selectedChannel.id}
+					channelName={this.props.selectedChannel.name}
+					channelId={this.props.selectedChannel._id}
 				/>
 			</div>
 		);

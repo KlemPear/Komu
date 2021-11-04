@@ -12,7 +12,7 @@ const KomuSchema = new Schema(
 		description: {
 			type: String,
 		},
-		Users: [
+		users: [
 			{
 				type: Schema.Types.ObjectId,
 				ref: "User",

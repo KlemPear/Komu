@@ -40,7 +40,6 @@ export const createChannel =
 			`/messages/${komuId}/create-chatroom`,
 			formValues
 		);
-		console.log("create channel", response.data);
 		dispatch({ type: CREATE_CHANNEL, payload: response.data });
 		// do some programmatic navigation to get the user
 		// back to the main page StreamList
@@ -48,7 +47,7 @@ export const createChannel =
 	};
 
 export const fetchChannels = (komuId) => async (dispatch) => {
-	const response = await channels.get(`/messages/${komuId}/`);
+	const response = await channels.get(`/messages/${komuId}`);
 	dispatch({ type: FETCH_CHANNELS, payload: response.data });
 };
 

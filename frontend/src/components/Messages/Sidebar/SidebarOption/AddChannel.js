@@ -18,7 +18,7 @@ class AddChannel extends React.Component {
 	}
 
 	onSubmit = (formValues) => {
-		const komuId = "1";
+		const komuId = "61834ec8c6a1c6b2a87520ae";
 		const userId = "086ab3e86504452ba51937e723e7bdeb";
 		const newFormValues = { ...formValues, usersId: [userId] };
 		this.props.createChannel(newFormValues, komuId);
