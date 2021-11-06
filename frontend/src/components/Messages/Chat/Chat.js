@@ -5,7 +5,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Message from "../Message/Message";
 import ChatInput from "./ChatInput/ChatInput";
 import { connect } from "react-redux";
-import { fetchMessages } from "../../../actions";
+import { fetchMessages, postMessage } from "../../../actions";
 
 class Chat extends React.Component {
 	constructor(props) {
@@ -14,8 +14,9 @@ class Chat extends React.Component {
 	}
 
 	componentDidMount() {
+		const komuId = "61834ec8c6a1c6b2a87520ae";
 		if (this.props.selectedChannel) {
-			this.props.fetchMessages(this.props.selectedChannel._id);
+			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
 			this.setState({ currentChannelId: this.props.selectedChannel._id });
 		}
 	}
@@ -25,25 +26,30 @@ class Chat extends React.Component {
 			this.props.selectedChannel &&
 			this.props.selectedChannel._id !== this.state.currentChannelId
 		) {
-			this.props.fetchMessages(this.props.selectedChannel._id);
+			const komuId = "61834ec8c6a1c6b2a87520ae";
+			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
 			this.setState({ currentChannelId: this.props.selectedChannel._id });
 		}
 	}
 
 	renderMessages() {
-		return this.props.messages.map(
-			({ message, timestamp, user, userImage, id }) => (
-				<div key={id}>
-					<Message
-						message={message}
-						timestamp={timestamp}
-						user={user}
-						userImage={userImage}
-					/>
-				</div>
-			)
-		);
+		return this.props.messages.map((m) => (
+			<div key={m._id}>
+				{/* //<Message message={m} /> */}
+				{console.log(m._id)}
+			</div>
+		));
 	}
+
+	onInputSubmit = (input) => {
+		const komuId = "61834ec8c6a1c6b2a87520ae";
+		const userId = "086ab3e86504452ba51937e723e7bdeb";
+		const formValues = {
+			text: input,
+			userId: userId,
+		};
+		this.props.postMessage(komuId, this.props.selectedChannel._id, formValues);
+	};
 
 	renderChatRoom() {
 		return (
@@ -66,7 +72,7 @@ class Chat extends React.Component {
 				</div>
 				<ChatInput
 					channelName={this.props.selectedChannel.name}
-					channelId={this.props.selectedChannel._id}
+					onInputSubmit={this.onInputSubmit}
 				/>
 			</div>
 		);
@@ -87,4 +93,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { fetchMessages })(Chat);
+export default connect(mapStateToProps, { fetchMessages, postMessage })(Chat);

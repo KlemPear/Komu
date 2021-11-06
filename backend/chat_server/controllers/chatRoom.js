@@ -31,9 +31,10 @@ module.exports.postMessage = async (req, res, next) => {
 		const { userId, text } = req.body;
 		const newMessage = new Message({
 			chatRoom: roomId,
-			author: userId,
 			text: text,
 		});
+		const author = await User.findById(userId);
+		newMessage.author = author;
 		newMessage.readByUserIds.push(userId);
 		await newMessage.save();
 		return res.status(200).json(newMessage);
@@ -58,9 +59,10 @@ module.exports.getConversationByRoomId = async (req, res, next) => {
 		const messages = await Message.find({ chatRoom: roomId }).populate(
 			"author"
 		);
-		return res.status(200).json({ success: true, messages });
+		console.log(messages);
+		return res.status(200).json(messages);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		return res.status(500).json(error);
 	}
 };
 

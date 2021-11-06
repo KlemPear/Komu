@@ -1,28 +1,32 @@
 import React from "react";
-import { useState } from "react";
 import "./ChatInput.css";
 
-function ChatInput({ channelName, channelId }) {
-	const [input, setInput] = useState("");
+class ChatInput extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { input: "" };
+	}
 
-	const sendMessage = (e) => {
+	sendMessage = (e) => {
 		e.preventDefault();
+		this.props.onInputSubmit(this.state.input);
+		this.setState({ input: "" });
 	};
 
-	return (
-		<div className="chatInput">
-			<form>
-				<input
-					value={input}
-					onChange={(e) => setInput(e.target.value)}
-					placeholder={`Send a message to #${channelName}`}
-				/>
-				<button type="submit" onClick={sendMessage}>
-					SEND
-				</button>
-			</form>
-		</div>
-	);
+	render() {
+		return (
+			<div className="chatInput">
+				<form onSubmit={this.sendMessage}>
+					<input
+						value={this.state.input}
+						onChange={(e) => this.setState({ input: e.target.value })}
+						placeholder={`Send a message to #${this.props.channelName}`}
+					/>
+					<button type="submit">SEND</button>
+				</form>
+			</div>
+		);
+	}
 }
 
 export default ChatInput;

@@ -7,9 +7,9 @@ import {
 	EDIT_CHANNEL,
 	DELETE_CHANNEL,
 	SELECT_CHANNEL,
+	messagesTypes,
 } from "./types";
 import channels from "../apis/channels";
-import _ from "lodash";
 import history from "../History";
 
 export const signIn = (userId) => {
@@ -69,13 +69,20 @@ export const deleteChannel = (id) => async (dispatch) => {
 };
 
 //#endregion
-export const fetchMessages = (channelId) => async (dispatch) => {
-	const response = await channels.get("/messages");
-	const channelMessages = _.filter(response.data, { channelId: channelId });
-	console.log(response.data);
-	console.log(channelMessages);
-	dispatch({ type: "FETCH_MESSAGES", payload: channelMessages });
+export const fetchMessages = (komuId, channelId) => async (dispatch) => {
+	const response = await channels.get(`/messages/${komuId}/${channelId}`);
+	dispatch({ type: messagesTypes.FETCH_MESSAGES, payload: response.data });
 };
+
+export const postMessage =
+	(komuId, channelId, formValues) => async (dispatch) => {
+		const response = await channels.post(
+			`/messages/${komuId}/${channelId}/message`,
+			formValues
+		);
+		dispatch({ type: messagesTypes.POST_MESSAGE, payload: response.data });
+	};
+
 //#region Messages
 
 //#endregion
