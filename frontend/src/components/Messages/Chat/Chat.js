@@ -33,12 +33,19 @@ class Chat extends React.Component {
 	}
 
 	renderMessages() {
-		return this.props.messages.map((m) => (
-			<div key={m._id}>
-				{/* //<Message message={m} /> */}
-				{console.log(m._id)}
-			</div>
-		));
+		if (this.props.messages !== null) {
+			return this.props.messages.map((m) => (
+				<div key={m._id}>
+					<Message text={m.text} author={m.author} updatedAt={m.updatedAt} />
+				</div>
+			));
+		} else {
+			return (
+				<div>
+					<h3>Say something, don't be shy!</h3>
+				</div>
+			);
+		}
 	}
 
 	onInputSubmit = (input) => {
@@ -67,9 +74,7 @@ class Chat extends React.Component {
 						</p>
 					</div>
 				</div>
-				<div className="chat-messages">
-					{this.props.messages ? this.renderMessages() : null}
-				</div>
+				<div className="chat-messages">{this.renderMessages()}</div>
 				<ChatInput
 					channelName={this.props.selectedChannel.name}
 					onInputSubmit={this.onInputSubmit}

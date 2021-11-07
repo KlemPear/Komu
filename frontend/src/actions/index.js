@@ -69,6 +69,7 @@ export const deleteChannel = (id) => async (dispatch) => {
 };
 
 //#endregion
+
 export const fetchMessages = (komuId, channelId) => async (dispatch) => {
 	const response = await channels.get(`/messages/${komuId}/${channelId}`);
 	dispatch({ type: messagesTypes.FETCH_MESSAGES, payload: response.data });
@@ -77,7 +78,7 @@ export const fetchMessages = (komuId, channelId) => async (dispatch) => {
 export const postMessage =
 	(komuId, channelId, formValues) => async (dispatch) => {
 		const response = await channels.post(
-			`/messages/${komuId}/${channelId}/message`,
+			`/messages/${komuId}/${channelId}/new-message`,
 			formValues
 		);
 		dispatch({ type: messagesTypes.POST_MESSAGE, payload: response.data });

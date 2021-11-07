@@ -15,7 +15,7 @@ module.exports.createChatRoom = async (req, res, next) => {
 			name: name,
 			description: description,
 			users: users,
-			komu: komu
+			komu: komu,
 		});
 		console.log("chatroom: ", newChatRoom);
 		await newChatRoom.save();
@@ -59,7 +59,6 @@ module.exports.getConversationByRoomId = async (req, res, next) => {
 		const messages = await Message.find({ chatRoom: roomId }).populate(
 			"author"
 		);
-		console.log(messages);
 		return res.status(200).json(messages);
 	} catch (error) {
 		return res.status(500).json(error);
