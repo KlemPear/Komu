@@ -5,6 +5,13 @@ const morgan = require("morgan");
 const cors = require("cors");
 const socketio = require("socket.io");
 const WebSockets = require("./utils/WebSockets");
+// session
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+// authentication
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/User");
 // routes
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
@@ -28,6 +35,56 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//Session set up
+// Set up session with Mongo
+const secret = process.env.SECRET || "thisShouldBeASecret";
+const store = MongoStore.create({
+	mongoUrl: mongoDbSetUp._connectionString,
+	secret: secret,
+	touchAfter: 24 * 60 * 60, // lazy update sessions every 24 hours (writen here in seconds)
+});
+
+store.on("error", function (e) {
+	console.log("Session store error", e);
+});
+
+const sessionConfig = {
+	store: store,
+	name: "CoolSessionName",
+	secret: secret,
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		httpOnly: true,
+		//secure: true, // session cookies can only be configured over HTTPS
+		expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
+		maxAge: 1000 * 60 * 60 * 24 * 7,
+	},
+};
+app.use(session(sessionConfig));
+
+//Passport set up
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+// serialize and deserialize
+passport.serializeUser(function (user, done) {
+	//console.log('serializeUser: ' + user._id);
+	done(null, user._id);
+});
+passport.deserializeUser(function (id, done) {
+	User.findById(id, function (err, user) {
+		//console.log(user);
+		if (!err) done(null, user);
+		else done(err, null);
+	});
+});
+
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user;
+	next();
+});
 
 app.use("/", indexRouter);
 app.use("/users", userRouter);

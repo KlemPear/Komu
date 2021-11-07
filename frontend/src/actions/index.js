@@ -8,9 +8,37 @@ import {
 	DELETE_CHANNEL,
 	SELECT_CHANNEL,
 	messagesTypes,
+	usersTypes,
 } from "./types";
 import channels from "../apis/channels";
+import users from "../apis/users";
 import history from "../History";
+
+export const registerUser = (body) => async (dispatch, getState) => {
+	const response = await users.post(`/register`, body);
+	dispatch({ type: usersTypes.REGISTER_USER, payload: response.data });
+	// do some programmatic navigation to get the user
+	// back to the main page StreamList
+	history.push("/");
+};
+
+export const loginUser = (formValues) => async (dispatch, getState) => {
+	const response = await users.post(`/login`, formValues);
+	console.log(response.data);
+	dispatch({ type: usersTypes.LOGIN_USER, payload: response.data });
+	// do some programmatic navigation to get the user
+	// back to the main page StreamList
+	history.push("/");
+};
+
+export const logOutUser = () => async (dispatch, getState) => {
+	const response = await users.get(`/logout`);
+	console.log(response.data);
+	dispatch({ type: usersTypes.LOGOUT_USER, payload: response.data });
+	// do some programmatic navigation to get the user
+	// back to the main page StreamList
+	history.push("/");
+};
 
 export const signIn = (userId) => {
 	return {
@@ -37,7 +65,7 @@ export const selectChannel = (channelId) => {
 export const createChannel =
 	(formValues, komuId) => async (dispatch, getState) => {
 		const response = await channels.post(
-			`/messages/${komuId}/create-chatroom`,
+			`/${komuId}/create-chatroom`,
 			formValues
 		);
 		dispatch({ type: CREATE_CHANNEL, payload: response.data });
@@ -47,7 +75,7 @@ export const createChannel =
 	};
 
 export const fetchChannels = (komuId) => async (dispatch) => {
-	const response = await channels.get(`/messages/${komuId}`);
+	const response = await channels.get(`/${komuId}`);
 	dispatch({ type: FETCH_CHANNELS, payload: response.data });
 };
 
@@ -71,14 +99,14 @@ export const deleteChannel = (id) => async (dispatch) => {
 //#endregion
 
 export const fetchMessages = (komuId, channelId) => async (dispatch) => {
-	const response = await channels.get(`/messages/${komuId}/${channelId}`);
+	const response = await channels.get(`/${komuId}/${channelId}`);
 	dispatch({ type: messagesTypes.FETCH_MESSAGES, payload: response.data });
 };
 
 export const postMessage =
 	(komuId, channelId, formValues) => async (dispatch) => {
 		const response = await channels.post(
-			`/messages/${komuId}/${channelId}/new-message`,
+			`/${komuId}/${channelId}/new-message`,
 			formValues
 		);
 		dispatch({ type: messagesTypes.POST_MESSAGE, payload: response.data });

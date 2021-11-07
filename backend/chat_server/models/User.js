@@ -1,21 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { v4: uuidv4 } = require("uuid");
+const passportLocalMongoose = require("passport-local-mongoose");
 
-module.exports.USER_TYPES = {
-	CONSUMER: "consumer",
-	SUPPORT: "support",
-};
+
 
 const userSchema = new mongoose.Schema(
 	{
-		_id: {
-			type: String,
-			default: () => uuidv4().replace(/\-/g, ""),
-		},
 		firstName: String,
 		lastName: String,
-		type: String,
+		email: String,
+		bio: String,
 	},
 	{
 		timestamps: true,
@@ -35,5 +29,7 @@ userSchema.statics.findUsersByIds = async function (usersId) {
 		throw error;
 	}
 };
+
+userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", userSchema);

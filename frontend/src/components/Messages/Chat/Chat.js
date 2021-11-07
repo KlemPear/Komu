@@ -50,7 +50,7 @@ class Chat extends React.Component {
 
 	onInputSubmit = (input) => {
 		const komuId = "61834ec8c6a1c6b2a87520ae";
-		const userId = "086ab3e86504452ba51937e723e7bdeb";
+		const userId = this.props.user._id;
 		const formValues = {
 			text: input,
 			userId: userId,
@@ -95,6 +95,7 @@ const mapStateToProps = (state) => {
 	return {
 		messages: Object.values(state.messages),
 		selectedChannelId: state.selectedChannelId?.id,
+		user: state.auth.user,
 	};
 };
 

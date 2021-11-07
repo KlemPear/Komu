@@ -39,7 +39,8 @@ module.exports.postMessage = async (req, res, next) => {
 		await newMessage.save();
 		return res.status(200).json(newMessage);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		console.log(error)
+		return res.status(500).json(error);
 	}
 };
 
@@ -61,6 +62,7 @@ module.exports.getConversationByRoomId = async (req, res, next) => {
 		);
 		return res.status(200).json(messages);
 	} catch (error) {
+		console.log(error);
 		return res.status(500).json(error);
 	}
 };
