@@ -43,21 +43,15 @@ class Sidebar extends React.Component {
 					<div className="sidebar-info">
 						<h3>
 							<FiberManualRecordIcon />
-							Clément Poirier
+							{this.props.user.firstName + ' ' + this.props.user.lastName}
 						</h3>
 					</div>
 					<CreateIcon />
 				</div>
 				<SidebarOption Icon={InsertCommentIcon} title="Threads" />
 				<SidebarOption Icon={InboxIcon} title="Mentions & reactions" />
-				<SidebarOption Icon={DraftsIcon} title="Saved items" />
-				<SidebarOption Icon={BookmarkBorderIcon} title="Channel browser" />
-				<SidebarOption Icon={FileCopyIcon} title="File browser" />
-				<SidebarOption Icon={PeopleAltIcon} title="People & user groups" />
-				<SidebarOption Icon={AppsIcon} title="Apps" />
-				<SidebarOption Icon={ExpandLessIcon} title="Show less" />
 				<hr />
-				<SidebarOption Icon={AddIcon} addChannelOption title=" Add Channel" />
+				<SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
 				<hr />
 
 				{/* Connect to db and list all the channels*/}
@@ -79,6 +73,7 @@ const mapStateToProps = (state) => {
 	return {
 		channels: Object.values(state.channels),
 		selectedChannelId: state.selectedChannel?.id,
+		user: state.auth.user,
 	};
 };
 

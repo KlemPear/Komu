@@ -8,12 +8,12 @@ import AddChannel from "./Messages/Sidebar/SidebarOption/AddChannel";
 import Register from './Users/Register';
 import Login from "./Users/Login";
 import ShowUser from "./Users/ShowUser";
+import "./App.css"
 
 const App = () => {
 	return (
-		<div className="ui container">
+		<div className="ui container app">
 			<Router history={history}>
-				<div>
 					<Header />
 					<Switch>
 						<Route path="/" exact component={LandingPage} />
@@ -27,7 +27,6 @@ const App = () => {
 						<Route path="/Login" exact component={Login} />
 						<Route path="/ShowUser" exact component={ShowUser} />
 					</Switch>
-				</div>
 			</Router>
 		</div>
 	);

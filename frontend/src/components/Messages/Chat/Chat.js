@@ -87,7 +87,7 @@ class Chat extends React.Component {
 		if (!this.props.selectedChannel) {
 			return <h3>Select a channel to start chatting!</h3>;
 		}
-		return <div>{this.renderChatRoom()}</div>;
+		return this.renderChatRoom();
 	}
 }
 
@@ -95,7 +95,7 @@ const mapStateToProps = (state) => {
 	return {
 		messages: Object.values(state.messages),
 		selectedChannelId: state.selectedChannelId?.id,
-		user: state.auth.user,
+		user: state.auth.user
 	};
 };
 

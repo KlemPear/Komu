@@ -21,12 +21,10 @@ class Messages extends React.Component {
 
 	render() {
 		return (
-			<div className="App">
 				<div className="app-body">
 					<Sidebar />
 					<Chat selectedChannel={this.selectedChannel()} />
 				</div>
-			</div>
 		);
 	}
 }

@@ -6,7 +6,6 @@ import { logOutUser } from "../actions";
 
 class Header extends React.Component {
 	onLogOutSubmit = () => {
-		console.log("logout was clicked!");
 		this.props.logOutUser();
 	};
 
@@ -26,9 +25,11 @@ class Header extends React.Component {
 					<Link to="/ShowUser" className="right menu item">
 						Profile
 					</Link>
-					<button className="ui primary" onClick={this.onLogOutSubmit}>
-						Log Out
-					</button>
+					<Link to="/">
+						<button className="ui btn btn-primary" onClick={this.onLogOutSubmit}>
+							Log Out
+						</button>
+					</Link>
 				</div>
 			);
 		} else {
@@ -37,13 +38,10 @@ class Header extends React.Component {
 					<Link to="/" className="item">
 						Komu
 					</Link>
-					<Link to="/Messages" className="item">
-						Messages
-					</Link>
-					<Link to="/Register" className="right menu item">
+					<Link to="/Register" className="item">
 						Sign Up
 					</Link>
-					<Link to="/Login" className="right menu item">
+					<Link to="/Login" className="item">
 						Sign In
 					</Link>
 					<div className="right menu">

@@ -8,7 +8,7 @@ function SidebarOption({ Icon, title, addChannelOption }) {
 			<div className="sidebarOption">
 				<h3 className="sidebarOption-channel">
 					<span className="sidebarOption-hash">#</span>
-					<Link to="Messages/create_channel">{title}</Link>
+					<Link to="Messages/create_channel" className="sidebarOption-channel">{title}</Link>
 				</h3>
 			</div>
 		);
