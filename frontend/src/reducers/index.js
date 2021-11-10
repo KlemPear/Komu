@@ -4,6 +4,7 @@ import authReducer from "./authReducer";
 import channelReducer from "./channelReducer";
 import selectedChannelReducer from "./selectedChannelReducer";
 import messagesReducer from "./messagesReducer";
+import komuReducer from "./komuReducer";
 
 export default combineReducers({
 	auth: authReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
 	channels: channelReducer,
 	selectedChannel: selectedChannelReducer,
 	messages: messagesReducer,
+	komu: komuReducer
 });

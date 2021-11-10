@@ -14,9 +14,9 @@ class Header extends React.Component {
 			return (
 				<div className="ui secondary pointing menu">
 					<Link to="/" className="item">
-						Komu
+						Home
 					</Link>
-					<Link to="/new-komu" className="item">
+					<Link to="/create-komu" className="item">
 						New Komu
 					</Link>
 					<Link to="/Messages" className="item">
@@ -26,7 +26,10 @@ class Header extends React.Component {
 						Profile
 					</Link>
 					<Link to="/">
-						<button className="ui btn btn-primary" onClick={this.onLogOutSubmit}>
+						<button
+							className="ui btn btn-primary"
+							onClick={this.onLogOutSubmit}
+						>
 							Log Out
 						</button>
 					</Link>
@@ -36,7 +39,7 @@ class Header extends React.Component {
 			return (
 				<div className="ui secondary pointing menu">
 					<Link to="/" className="item">
-						Komu
+						Home
 					</Link>
 					<Link to="/Register" className="item">
 						Sign Up

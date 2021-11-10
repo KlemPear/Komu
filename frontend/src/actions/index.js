@@ -9,9 +9,11 @@ import {
 	SELECT_CHANNEL,
 	messagesTypes,
 	usersTypes,
+	komuTypes,
 } from "./types";
 import channels from "../apis/channels";
 import users from "../apis/users";
+import komu from "../apis/komu";
 import history from "../History";
 
 export const registerUser = (body) => async (dispatch, getState) => {
@@ -98,6 +100,7 @@ export const deleteChannel = (id) => async (dispatch) => {
 
 //#endregion
 
+//#region Messages
 export const fetchMessages = (komuId, channelId) => async (dispatch) => {
 	const response = await channels.get(`/${komuId}/${channelId}`);
 	dispatch({ type: messagesTypes.FETCH_MESSAGES, payload: response.data });
@@ -111,7 +114,18 @@ export const postMessage =
 		);
 		dispatch({ type: messagesTypes.POST_MESSAGE, payload: response.data });
 	};
+//#endregion
 
-//#region Messages
+//#region Komu
+export const createKomu = (formValues) => async (dispatch) => {
+	const response = await komu.post("/", formValues);
+	dispatch({ type: komuTypes.CREATE_KOMU, payload: response.data });
+	history.push("/");
+};
+
+export const getKomusByUserId = (formValues) => async (dispatch) => {
+
+};
+
 
 //#endregion
