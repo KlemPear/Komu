@@ -5,7 +5,6 @@ import Chat from "./Chat/Chat";
 import { connect } from "react-redux";
 import { fetchChannels } from "../../actions";
 import _ from "lodash";
-import NewSidebar from "./Sidebar/NewSidebar";
 
 class Messages extends React.Component {
 	componentDidMount() {
