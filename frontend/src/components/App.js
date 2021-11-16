@@ -2,7 +2,7 @@ import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import history from "../History";
 import Header from "./Header";
-import LandingPage from "./LandingPage";
+import LandingPage from "./LandingPage/LandingPage";
 import Messages from "./Messages/Messages";
 import AddChannel from "./Messages/Sidebar/SidebarOption/AddChannel";
 import Register from "./Users/Register";
