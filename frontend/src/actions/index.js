@@ -143,8 +143,15 @@ export const joinKomu = (formValues) => async (dispatch) => {
 		dispatch({ type: komuTypes.USER_ALREADY_IN_KOMU, payload: response.data });
 	} else {
 		dispatch({ type: komuTypes.JOIN_KOMU, payload: response.data });
-		history.push("/show-komus");
+		history.push("/list-komus");
 	}
+};
+
+export const selectKomu = (komuId) => {
+	return {
+		type: komuTypes.SELECT_KOMU,
+		payload: komuId,
+	};
 };
 
 //#endregion

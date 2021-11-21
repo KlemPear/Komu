@@ -3,6 +3,7 @@ import { SELECT_CHANNEL, komuTypes } from "../actions/types";
 const INITIAL_STATE = {
 	selectedChannelId: null,
 	userAlreadyInKomu: null,
+	selectedKomuId: null,
 };
 
 const miscReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +12,8 @@ const miscReducer = (state = INITIAL_STATE, action) => {
 			return { ...state, selectedChannelId: action.payload };
 		case komuTypes.USER_ALREADY_IN_KOMU:
 			return { ...state, userAlreadyInKomu: true };
+		case komuTypes.SELECT_KOMU:
+			return { ...state, selectedKomuId: action.payload };
 		default:
 			return state;
 	}

@@ -18,8 +18,8 @@ class AddChannel extends React.Component {
 	}
 
 	onSubmit = (formValues) => {
-		const komuId = "61834ec8c6a1c6b2a87520ae";
-		const userId = "086ab3e86504452ba51937e723e7bdeb";
+		const komuId = this.props.selectedKomuId;
+		const userId = this.props.user._id;
 		const newFormValues = { ...formValues, usersId: [userId] };
 		this.props.createChannel(newFormValues, komuId);
 	};
@@ -40,4 +40,11 @@ class AddChannel extends React.Component {
 	}
 }
 
-export default connect(null, { createChannel })(AddChannel);
+const mapStateToProps = (state) => {
+	return {
+		selectedKomuId: state.misc.selectedKomuId,
+		user: state.auth.user,
+	};
+};
+
+export default connect(mapStateToProps, { createChannel })(AddChannel);

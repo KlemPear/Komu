@@ -25,9 +25,11 @@ class Header extends React.Component {
 					<Link to="/list-komus" className="item">
 						See my Komus
 					</Link>
-					<Link to="/Messages" className="item">
-						Messages
-					</Link>
+					{this.props.selectedKomuId != null ? (
+						<Link to="/Messages" className="item">
+							Messages
+						</Link>
+					) : null}
 					<Link to="/ShowUser" className="right menu item">
 						Profile
 					</Link>
@@ -63,7 +65,10 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return { isSignedIn: state.auth.isSignedIn };
+	return {
+		isSignedIn: state.auth.isSignedIn,
+		selectedKomuId: state.misc.selectedKomuId,
+	};
 };
 
 export default connect(mapStateToProps, { logOutUser })(Header);

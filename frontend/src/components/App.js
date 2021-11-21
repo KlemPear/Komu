@@ -25,7 +25,11 @@ class App extends React.Component {
 						<Route
 							path="/Messages"
 							exact
-							component={this.props.isSignedIn ? Messages : LandingPage}
+							component={
+								this.props.isSignedIn && this.props.selectedKomuId != null
+									? Messages
+									: LandingPage
+							}
 						/>
 						<Route
 							path="/Messages/create_channel"
@@ -64,6 +68,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		isSignedIn: state.auth.isSignedIn,
+		selectedKomuId: state.misc.selectedKomuId,
 	};
 };
 

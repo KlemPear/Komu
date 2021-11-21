@@ -19,8 +19,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 class Sidebar extends React.Component {
 	componentDidMount() {
-		const komuId = "61834ec8c6a1c6b2a87520ae";
-		this.props.fetchChannels(komuId);
+		this.props.fetchChannels(this.props.selectedKomuId);
 	}
 
 	handleChannelClick(channelId) {
@@ -73,6 +72,7 @@ const mapStateToProps = (state) => {
 	return {
 		channels: Object.values(state.channels),
 		selectedChannelId: state.misc.selectedChannelid,
+		selectedKomuId: state.misc.selectedKomuId,
 		user: state.auth.user,
 	};
 };

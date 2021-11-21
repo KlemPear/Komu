@@ -14,7 +14,7 @@ class Chat extends React.Component {
 	}
 
 	componentDidMount() {
-		const komuId = "61834ec8c6a1c6b2a87520ae";
+		const komuId = this.props.selectedKomuId;
 		if (this.props.selectedChannel) {
 			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
 			this.setState({ currentChannelId: this.props.selectedChannel._id });
@@ -26,7 +26,7 @@ class Chat extends React.Component {
 			this.props.selectedChannel &&
 			this.props.selectedChannel._id !== this.state.currentChannelId
 		) {
-			const komuId = "61834ec8c6a1c6b2a87520ae";
+			const komuId = this.props.selectedKomuId;
 			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
 			this.setState({ currentChannelId: this.props.selectedChannel._id });
 		}
@@ -49,7 +49,7 @@ class Chat extends React.Component {
 	}
 
 	onInputSubmit = (input) => {
-		const komuId = "61834ec8c6a1c6b2a87520ae";
+		const komuId = this.props.selectedKomuId;
 		const userId = this.props.user._id;
 		const formValues = {
 			text: input,
@@ -95,6 +95,7 @@ const mapStateToProps = (state) => {
 	return {
 		messages: Object.values(state.messages),
 		selectedChannelId: state.misc.selectedChannelId,
+		selectedKomuId: state.misc.selectedKomuId,
 		user: state.auth.user
 	};
 };
