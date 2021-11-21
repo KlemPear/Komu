@@ -1,7 +1,8 @@
-import { SIGN_IN, SIGN_OUT, usersTypes } from "../actions/types";
+import { SIGN_IN, SIGN_OUT, usersTypes, komuTypes } from "../actions/types";
 
 const INITIAL_STATE = {
 	isSignedIn: null,
+	unauthorized: false,
 	user: null,
 };
 
@@ -12,11 +13,25 @@ const authReducer = (state = INITIAL_STATE, action) => {
 		// case SIGN_OUT:
 		// 	return { ...state, isSignedIn: false, user: null };
 		case usersTypes.REGISTER_USER:
-			return { ...state, isSignedIn: true, user: action.payload };
+			return {
+				...state,
+				isSignedIn: true,
+				user: action.payload,
+				unauthorized: false,
+			};
 		case usersTypes.LOGIN_USER:
-			return { ...state, isSignedIn: true, user: action.payload };
+			return {
+				...state,
+				isSignedIn: true,
+				user: action.payload,
+				unauthorized: false,
+			};
 		case usersTypes.LOGOUT_USER:
 			return { ...state, isSignedIn: false, user: action.payload };
+		case komuTypes.JOIN_KOMU:
+			return { ...state, isSignedIn: true, user: action.payload.user };
+		case usersTypes.UNAUTHORIZED:
+			return { ...state, isSignedIn: false, user: null, unauthorized: true };
 		default:
 			return state;
 	}

@@ -5,7 +5,7 @@ import { createKomu } from "../../actions";
 
 class CreateKomu extends React.Component {
 	onSubmit = (formValues) => {
-		this.props.createKomu({ ...formValues, usersId: [`${this.props.userId}`] });
+		this.props.createKomu({ ...formValues, userId: `${this.props.userId}`});
 	};
 
 	render() {

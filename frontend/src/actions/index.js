@@ -16,6 +16,7 @@ import users from "../apis/users";
 import komu from "../apis/komu";
 import history from "../History";
 
+//#region Users
 export const registerUser = (body) => async (dispatch, getState) => {
 	const response = await users.post(`/register`, body);
 	dispatch({ type: usersTypes.REGISTER_USER, payload: response.data });
@@ -25,12 +26,15 @@ export const registerUser = (body) => async (dispatch, getState) => {
 };
 
 export const loginUser = (formValues) => async (dispatch, getState) => {
-	const response = await users.post(`/login`, formValues);
-	console.log(response.data);
-	dispatch({ type: usersTypes.LOGIN_USER, payload: response.data });
-	// do some programmatic navigation to get the user
-	// back to the main page StreamList
-	history.push("/");
+	try {
+		const response = await users.post(`/login`, formValues);
+		dispatch({ type: usersTypes.LOGIN_USER, payload: response.data });
+		// do some programmatic navigation to get the user
+		// back to the main page StreamList
+		history.push("/");
+	} catch (error) {
+		dispatch({ type: usersTypes.UNAUTHORIZED });
+	}
 };
 
 export const logOutUser = () => async (dispatch, getState) => {
@@ -54,6 +58,7 @@ export const signOut = () => {
 		type: SIGN_OUT,
 	};
 };
+//#endregion
 
 //#region channels
 
@@ -124,8 +129,22 @@ export const createKomu = (formValues) => async (dispatch) => {
 };
 
 export const getKomusByUserId = (formValues) => async (dispatch) => {
-
+	const response = await komu.get("/", {
+		params: {
+			userId: formValues,
+		},
+	});
+	dispatch({ type: komuTypes.LIST_USER_KOMUS, payload: response.data });
 };
 
+export const joinKomu = (formValues) => async (dispatch) => {
+	const response = await komu.post("/join-komu", formValues);
+	if (response.data.userAlreadyInKomu) {
+		dispatch({ type: komuTypes.USER_ALREADY_IN_KOMU, payload: response.data });
+	} else {
+		dispatch({ type: komuTypes.JOIN_KOMU, payload: response.data });
+		history.push("/show-komus");
+	}
+};
 
 //#endregion

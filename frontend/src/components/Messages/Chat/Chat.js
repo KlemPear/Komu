@@ -94,7 +94,7 @@ class Chat extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		messages: Object.values(state.messages),
-		selectedChannelId: state.selectedChannelId?.id,
+		selectedChannelId: state.misc.selectedChannelId,
 		user: state.auth.user
 	};
 };

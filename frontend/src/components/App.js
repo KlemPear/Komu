@@ -9,8 +9,10 @@ import Register from "./Users/Register";
 import Login from "./Users/Login";
 import ShowUser from "./Users/ShowUser";
 import CreateKomu from "./Komu/CreateKomu";
+import JoinKomu from "./Komu/JoinKomu";
 import "./App.css";
 import { connect } from "react-redux";
+import ListKomus from "./Komu/ListKomus";
 
 class App extends React.Component {
 	render() {
@@ -41,6 +43,16 @@ class App extends React.Component {
 							path="/create-komu"
 							exact
 							component={this.props.isSignedIn ? CreateKomu : LandingPage}
+						/>
+						<Route
+							path="/join-komu"
+							exact
+							component={this.props.isSignedIn ? JoinKomu : LandingPage}
+						/>
+						<Route
+							path="/list-komus"
+							exact
+							component={this.props.isSignedIn ? ListKomus : LandingPage}
 						/>
 					</Switch>
 				</Router>

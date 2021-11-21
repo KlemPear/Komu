@@ -17,7 +17,13 @@ class Header extends React.Component {
 						Home
 					</Link>
 					<Link to="/create-komu" className="item">
-						New Komu
+						Create New Komu
+					</Link>
+					<Link to="/join-komu" className="item">
+						Join a Komu
+					</Link>
+					<Link to="/list-komus" className="item">
+						See my Komus
 					</Link>
 					<Link to="/Messages" className="item">
 						Messages

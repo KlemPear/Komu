@@ -1,12 +1,14 @@
 const Komu = require("../models/Komu");
 const User = require("../models/User");
 
-module.exports.getAllKomus = async (req, res, next) => {
+module.exports.getKomusByUserId = async (req, res, next) => {
 	try {
-		const komus = await Komu.find({});
-		return res.status(200).json({ success: true, komus });
+		const { userId } = req.query;
+		const user = await User.findById(userId).populate('komus');
+		return res.status(200).json(user.komus);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		console.log(error);
+		return res.status(500).json(error);
 	}
 };
 
@@ -22,16 +24,19 @@ module.exports.getKomu = async (req, res, next) => {
 
 module.exports.createKomu = async (req, res, next) => {
 	try {
-		const { name, description, usersId } = req.body;
-		const users = await User.findUsersByIds(usersId);
+		const { name, description, userId } = req.body;
+		const user = await User.findById(userId);
 		const komu = new Komu({
 			name: name,
 			description: description,
-			users: users,
 		});
-		await komu.save();
+		komu.users.push(user);
+		user.komus.push(komu);
+		user.save();
+		komu.save();
 		return res.status(200).json(komu);
 	} catch (error) {
+		console.log("Create Komu Error: ", error);
 		return res.status(500).json(error);
 	}
 };
@@ -55,5 +60,27 @@ module.exports.deleteKomu = async (req, res, next) => {
 		return res.status(200).json({ success: true, deleteKomu });
 	} catch (error) {
 		return res.status(500).json({ success: false, error: error });
+	}
+};
+
+module.exports.joinKomu = async (req, res, next) => {
+	try {
+		const { externalId, userId } = req.body;
+		const komu = await Komu.findOne({ externalId: externalId });
+		const user = await User.findById(userId);
+		console.log("Komu: ", komu);
+		console.log("User:  ", user);
+		if (!komu.users?.includes(user._id) && !user.komus?.includes(komu._id)) {
+			komu.users.push(user);
+			user.komus.push(komu);
+			await user.save();
+			await komu.save();
+			return res.status(200).json({ komu: komu, user: user });
+		}
+		console.log("userAlreadyInKomu");
+		return res.status(200).json({ userAlreadyInKomu: true });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).send(error);
 	}
 };

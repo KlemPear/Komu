@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import authReducer from "./authReducer";
 import channelReducer from "./channelReducer";
-import selectedChannelReducer from "./selectedChannelReducer";
+import miscReducer from "./miscReducer";
 import messagesReducer from "./messagesReducer";
 import komuReducer from "./komuReducer";
 
@@ -10,7 +10,7 @@ export default combineReducers({
 	auth: authReducer,
 	form: formReducer,
 	channels: channelReducer,
-	selectedChannel: selectedChannelReducer,
+	misc: miscReducer,
 	messages: messagesReducer,
-	komu: komuReducer
+	komus: komuReducer,
 });

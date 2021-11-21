@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("./User");
-const ChatRoom = require("./ChatRoom");
+const { v4 } = require("uuid");
 
 const Schema = mongoose.Schema;
 
@@ -18,6 +17,7 @@ const KomuSchema = new Schema(
 				ref: "User",
 			},
 		],
+		externalId: { type: String, default: () => v4() },
 	},
 	{
 		timestamps: true,

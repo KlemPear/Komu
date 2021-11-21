@@ -32,7 +32,7 @@ class Messages extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		channels: Object.values(state.channels),
-		selectedChannelId: state.selectedChannel.id,
+		selectedChannelId: state.misc.selectedChannelId,
 	};
 };
 
