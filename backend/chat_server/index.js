@@ -29,12 +29,29 @@ mongoDbSetUp.once("open", () => {
 });
 
 /** Get port from environment and store in Express. */
-const port = process.env.PORT || "3001";
+const port = process.env.PORT || "5000";
 app.set("port", port);
-app.use(cors());
+
+//Configure CORS
+var whitelist = ["http://localhost:3000"];
+var corsOptions = {
+	origin: function (origin, callback) {
+		if (whitelist.indexOf(origin) !== -1) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+	credentials: true,
+	allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
+
 app.use(morgan("dev"));
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+// less easy for user to see that we are using express, less hacking
+app.disable("x-powered-by");
 
 //Session set up
 // Set up session with Mongo
@@ -49,14 +66,16 @@ store.on("error", function (e) {
 	console.log("Session store error", e);
 });
 
+const SESS_NAME = "SessionId";
+
 const sessionConfig = {
 	store: store,
-	name: "CoolSessionName",
 	secret: secret,
+	name: SESS_NAME,
 	resave: false,
-	saveUninitialized: true,
+	saveUninitialized: false,
 	cookie: {
-		httpOnly: true,
+		sameSite: false,
 		//secure: true, // session cookies can only be configured over HTTPS
 		expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
 		maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -70,16 +89,16 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 // serialize and deserialize
 passport.serializeUser(function (user, done) {
-	//console.log('serializeUser: ' + user._id);
 	done(null, user._id);
 });
 passport.deserializeUser(function (id, done) {
 	User.findById(id, function (err, user) {
-		//console.log(user);
 		if (!err) done(null, user);
 		else done(err, null);
 	});
 });
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;

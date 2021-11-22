@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import GoogleAuth from "./GoogleAuth";
+//import GoogleAuth from "./GoogleAuth";
 import { connect } from "react-redux";
 import { logOutUser } from "../actions";
 
@@ -55,9 +55,9 @@ class Header extends React.Component {
 					<Link to="/Login" className="item">
 						Sign In
 					</Link>
-					<div className="right menu">
+					{/* <div className="right menu">
 						<GoogleAuth />
-					</div>
+					</div> */}
 				</div>
 			);
 		}

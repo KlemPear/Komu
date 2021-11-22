@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema(
 	{
 		firstName: String,
 		lastName: String,
-		email: String,
+		email: {
+			type: String,
+			validate: {
+				validator: (email) => User.doesNotExist({ email }),
+				message: "email already exists",
+			},
+		},
 		bio: String,
 		komus: [{ type: Schema.Types.ObjectId, ref: "Komu" }],
 	},
@@ -15,6 +21,10 @@ const userSchema = new mongoose.Schema(
 		collection: "users",
 	}
 );
+
+userSchema.statics.doesNotExist = async function (field) {
+	return (await this.where(field).countDocuments()) === 0;
+};
 
 userSchema.statics.findUsersByIds = async function (usersId) {
 	try {
@@ -31,4 +41,6 @@ userSchema.statics.findUsersByIds = async function (usersId) {
 
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+module.exports = User;
+

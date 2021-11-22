@@ -7,6 +7,7 @@ const router = express.Router();
 
 router
 	.get("/", user.onGetAllUsers)
+	.get("/session", user.getSession)
 	.post("/register", user.onCreateUser)
 	.post(
 		"/login",

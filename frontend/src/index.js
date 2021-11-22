@@ -6,16 +6,21 @@ import reduxThunk from "redux-thunk";
 
 import App from "./components/App";
 import reducers from "./reducers";
+import { checkLoggedIn } from "./util/session";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-	reducers,
-	composeEnhancers(applyMiddleware(reduxThunk))
-);
-
-ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
-	document.querySelector("#root")
-);
+const renderApp = (preloadedState) => {
+	const composeEnhancers =
+		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+	const store = createStore(
+		reducers,
+		preloadedState,
+		composeEnhancers(applyMiddleware(reduxThunk))
+	);
+	ReactDOM.render(
+		<Provider store={store}>
+				<App />
+		</Provider>,
+		document.getElementById("root")
+	);
+};
+(async () => renderApp(await checkLoggedIn()))();

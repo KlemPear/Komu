@@ -19,7 +19,11 @@ class ListKomus extends React.Component {
 	renderKomusName() {
 		return this.props.komus.map((komu) => (
 			<div key={komu._id} onClick={() => this.handleSelectKomu(komu._id)}>
-				{komu.name}
+				<h5>{komu.name}</h5>
+				<p>{komu.description}</p>
+        <br/>
+				<p>Code: {komu.externalId}</p>
+        <hr/>
 			</div>
 		));
 	}
@@ -38,7 +42,7 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
 		komus: Object.values(state.komus),
-    selectedKomuId: state.misc.selectedKomuId,
+		selectedKomuId: state.misc.selectedKomuId,
 	};
 };
 

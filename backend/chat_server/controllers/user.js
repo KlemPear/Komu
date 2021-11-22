@@ -11,6 +11,20 @@ module.exports.onGetAllUsers = async (req, res, next) => {
 	}
 };
 
+module.exports.getSession = async (req, res, next) => {
+	try {
+		if (req.session.passport) {
+			const user = await User.findById(req.session.passport.user);
+			return res.status(200).json(user);
+		} else {
+			return res.status(200).json(false);
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json(error);
+	}
+};
+
 module.exports.onGetUserById = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.params.id);
@@ -33,6 +47,7 @@ module.exports.onCreateUser = async (req, res, next) => {
 			if (err) return res.status(500).json(error);
 			return res.status(200).json(registeredUser);
 		});
+		req.session.user = registeredUser;
 		return res.status(200).json(registeredUser);
 	} catch (error) {
 		return res.status(500).json(error);
@@ -45,6 +60,8 @@ module.exports.login = (req, res) => {
 
 module.exports.logout = (req, res) => {
 	req.logout();
+	req.session.destroy();
+	res.clearCookie("SessionId");
 	return res.status(200).json(null);
 };
 
