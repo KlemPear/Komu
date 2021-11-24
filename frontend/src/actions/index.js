@@ -14,7 +14,7 @@ import {
 import channels from "../apis/channels";
 import users from "../apis/users";
 import komu from "../apis/komu";
-import history from "../History";
+import history from "../util/History";
 
 //#region Users
 export const registerUser = (body) => async (dispatch, getState) => {

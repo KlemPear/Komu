@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
-const socketio = require("socket.io");
+const socketIo = require("socket.io");
 const WebSockets = require("./utils/WebSockets");
 // session
 const session = require("express-session");
@@ -122,16 +122,16 @@ app.use("*", (req, res) => {
 const server = http.createServer(app);
 
 /** Create socket connection */
-global.io = socketio(server, {
+const io = socketIo(server, {
 	cors: {
-		origin: `http://localhost:${port}`,
+		origin: `http://localhost:3000`, //`http://localhost:${port}`,
 		methods: ["GET", "POST"],
 		transports: ["websocket", "polling"],
 		credentials: true,
 	},
 	allowEIO3: true,
 });
-global.io.on("connection", WebSockets.connection);
+io.on("connection", (socket) => WebSockets.connection(socket));
 
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);

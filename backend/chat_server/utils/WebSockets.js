@@ -1,8 +1,13 @@
 class WebSockets {
 	users = [];
 	connection(client) {
+		client.emit("FromAPI", () => {
+			console.log("a new client made Socket Connection");
+		});
+
 		// event fired when the chat room is disconnected
 		client.on("disconnect", () => {
+			console.log("a client disconected");
 			this.users = this.users.filter((user) => user.socketId !== client.id);
 		});
 

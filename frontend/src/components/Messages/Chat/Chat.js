@@ -6,6 +6,9 @@ import Message from "../Message/Message";
 import ChatInput from "./ChatInput/ChatInput";
 import { connect } from "react-redux";
 import { fetchMessages, postMessage } from "../../../actions";
+// ocketIo
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
 
 class Chat extends React.Component {
 	constructor(props) {
@@ -19,6 +22,11 @@ class Chat extends React.Component {
 			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
 			this.setState({ currentChannelId: this.props.selectedChannel._id });
 		}
+		//socketIO
+		const socket = socketIOClient(ENDPOINT);
+		socket.on("FromAPI", (data) => {
+			console.log("Socket connection made");
+		});
 	}
 
 	componentDidUpdate() {

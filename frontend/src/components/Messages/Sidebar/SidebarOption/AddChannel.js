@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Modal from "../../../Modal";
 import { Link } from "react-router-dom";
-import history from "../../../../History";
+import history from "../../../../util/History";
 import NewChannelForm from "../NewChannelForm";
 import { createChannel } from "../../../../actions/index";
 
