@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const socketIo = require("socket.io");
 const WebSockets = require("./utils/WebSockets");
+const chat = require("./utils/chat");
 // session
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -30,18 +31,13 @@ mongoDbSetUp.once("open", () => {
 
 /** Get port from environment and store in Express. */
 const port = process.env.PORT || "5000";
+const frontendURL = process.env.FRONTEND_URL || "http://localhost:3000";
 app.set("port", port);
 
 //Configure CORS
-var whitelist = ["http://localhost:3000"];
+var whitelist = [frontendURL];
 var corsOptions = {
-	origin: function (origin, callback) {
-		if (whitelist.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			callback(new Error("Not allowed by CORS"));
-		}
-	},
+	origin: whitelist,
 	credentials: true,
 	allowedHeaders: ["Content-Type", "Authorization"],
 };
@@ -124,14 +120,15 @@ const server = http.createServer(app);
 /** Create socket connection */
 const io = socketIo(server, {
 	cors: {
-		origin: `http://localhost:3000`, //`http://localhost:${port}`,
+		origin: frontendURL,
 		methods: ["GET", "POST"],
 		transports: ["websocket", "polling"],
 		credentials: true,
 	},
 	allowEIO3: true,
 });
-io.on("connection", (socket) => WebSockets.connection(socket));
+//io.on("connection", (socket) => WebSockets.connection(socket));
+chat(io);
 
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);

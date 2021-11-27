@@ -47,7 +47,7 @@ module.exports.postMessage = async (req, res, next) => {
 module.exports.getChatRooms = async (req, res, next) => {
 	try {
 		const { komuId } = req.params;
-		const chatRooms = await ChatRoom.find({ komuId: komuId });
+		const chatRooms = await ChatRoom.find({ komu: komuId });
 		return res.status(200).json(chatRooms);
 	} catch (error) {
 		return res.status(500).json(error);

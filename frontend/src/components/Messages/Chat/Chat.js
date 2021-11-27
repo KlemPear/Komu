@@ -5,39 +5,48 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Message from "../Message/Message";
 import ChatInput from "./ChatInput/ChatInput";
 import { connect } from "react-redux";
-import { fetchMessages, postMessage } from "../../../actions";
-// ocketIo
-import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+import { fetchMessages, postMessage, newMessage } from "../../../actions";
 
 class Chat extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { currentChannelId: null };
+		this.state = { currentChannelId: null, isTypingInfo: null };
 	}
 
 	componentDidMount() {
 		const komuId = this.props.selectedKomuId;
 		if (this.props.selectedChannel) {
-			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
-			this.setState({ currentChannelId: this.props.selectedChannel._id });
+			this.props.fetchMessages(komuId, this.props.selectedChannelId);
+			this.setState({ currentChannelId: this.props.selectedChannelId });
 		}
-		//socketIO
-		const socket = socketIOClient(ENDPOINT);
-		socket.on("FromAPI", (data) => {
-			console.log("Socket connection made");
-		});
 	}
 
 	componentDidUpdate() {
 		if (
 			this.props.selectedChannel &&
-			this.props.selectedChannel._id !== this.state.currentChannelId
+			this.props.selectedChannelId !== this.state.currentChannelId
 		) {
 			const komuId = this.props.selectedKomuId;
-			this.props.fetchMessages(komuId, this.props.selectedChannel._id);
-			this.setState({ currentChannelId: this.props.selectedChannel._id });
+			this.props.fetchMessages(komuId, this.props.selectedChannelId);
+			this.setState({ currentChannelId: this.props.selectedChannelId });
 		}
+		//socketIO
+		this.props.socket.on("message", (channelId) => {
+			if (channelId === this.props.selectedChannelId) {
+				this.props.fetchMessages(
+					this.props.selectedKomuId,
+					this.props.selectedChannelId
+				);
+			}
+		});
+		// this.props.socket.on("isTyping", (isTypingInfo) => {
+		// 	if (
+		// 		isTypingInfo.channelId === this.props.selectedChannelId &&
+		// 		isTypingInfo.userId !== this.props.user._id
+		// 	) {
+		// 		this.setState({ isTypingInfo: isTypingInfo });
+		// 	}
+		// });
 	}
 
 	renderMessages() {
@@ -63,7 +72,27 @@ class Chat extends React.Component {
 			text: input,
 			userId: userId,
 		};
-		this.props.postMessage(komuId, this.props.selectedChannel._id, formValues);
+		this.props.postMessage(komuId, this.props.selectedChannelId, formValues);
+		this.props.socket.emit("message", this.props.selectedChannelId);
+	};
+
+	onUserIsTyping = () => {
+		const isTypingInfo = {
+			userId: this.props.user._id,
+			userName: `${this.props.user.firstName} ${this.props.user.lastName}`,
+			channelId: this.props.selectedChannelId,
+		};
+		this.props.socket.emit("isTyping", isTypingInfo);
+	};
+
+	renderIsTyping = () => {
+		if (this.state.isTypingInfo) {
+			return (
+				<>
+					<span>{this.state.isTypingInfo.userName} is typing...</span>
+				</>
+			);
+		}
 	};
 
 	renderChatRoom() {
@@ -84,9 +113,12 @@ class Chat extends React.Component {
 				</div>
 				<div className="chat-messages">{this.renderMessages()}</div>
 				<ChatInput
+					socket={this.props.socket}
+					onUserIsTyping={this.onUserIsTyping}
 					channelName={this.props.selectedChannel.name}
 					onInputSubmit={this.onInputSubmit}
 				/>
+				<div>{this.renderIsTyping()}</div>
 			</div>
 		);
 	}
@@ -104,8 +136,12 @@ const mapStateToProps = (state) => {
 		messages: Object.values(state.messages),
 		selectedChannelId: state.misc.selectedChannelId,
 		selectedKomuId: state.misc.selectedKomuId,
-		user: state.auth.user
+		user: state.auth.user,
 	};
 };
 
-export default connect(mapStateToProps, { fetchMessages, postMessage })(Chat);
+export default connect(mapStateToProps, {
+	fetchMessages,
+	postMessage,
+	newMessage,
+})(Chat);

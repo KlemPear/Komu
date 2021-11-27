@@ -4,6 +4,7 @@ import {
 	FETCH_CHANNEL,
 	FETCH_CHANNELS,
 	DELETE_CHANNEL,
+	FLUSH_CHANNELS,
 } from "../actions/types";
 import _ from "lodash";
 
@@ -19,11 +20,11 @@ const channelReducer = (state = {}, action) => {
 			return { ...state, [action.payload.id]: action.payload };
 		case DELETE_CHANNEL:
 			return _.omit(state, action.payload);
+		case FLUSH_CHANNELS:
+			return {};
 		default:
 			return state;
 	}
 };
 
 export default channelReducer;
-
-

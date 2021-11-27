@@ -7,6 +7,7 @@ import {
 	EDIT_CHANNEL,
 	DELETE_CHANNEL,
 	SELECT_CHANNEL,
+	FLUSH_CHANNELS,
 	messagesTypes,
 	usersTypes,
 	komuTypes,
@@ -119,6 +120,10 @@ export const postMessage =
 		);
 		dispatch({ type: messagesTypes.POST_MESSAGE, payload: response.data });
 	};
+
+export const newMessage = (message) => async (dispatch) => {
+	dispatch({ type: messagesTypes.POST_MESSAGE, payload: message });
+};
 //#endregion
 
 //#region Komu
@@ -147,11 +152,9 @@ export const joinKomu = (formValues) => async (dispatch) => {
 	}
 };
 
-export const selectKomu = (komuId) => {
-	return {
-		type: komuTypes.SELECT_KOMU,
-		payload: komuId,
-	};
+export const selectKomu = (komuId) => async (dispatch) => {
+	dispatch({ type: komuTypes.SELECT_KOMU, payload: komuId });
+	dispatch({ type: FLUSH_CHANNELS, payload: komuId });
 };
 
 //#endregion

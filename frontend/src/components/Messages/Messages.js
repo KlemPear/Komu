@@ -5,10 +5,25 @@ import Chat from "./Chat/Chat";
 import { connect } from "react-redux";
 import { fetchChannels } from "../../actions";
 import _ from "lodash";
+// socketIo
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
 
 class Messages extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { socket: socketIOClient(ENDPOINT) };
+	}
 	componentDidMount() {
-		this.props.fetchChannels();
+		this.props.fetchChannels(this.props.selectedKomuId);
+		this.state.socket.on("APIConnected", () => {
+			console.log("Socket connection made");
+		});
+	}
+
+	componentWillUnmount() {
+		this.state.socket.close();
+		console.log("socket disconnected");
 	}
 
 	selectedChannel() {
@@ -22,8 +37,11 @@ class Messages extends React.Component {
 	render() {
 		return (
 			<div className="app-body">
-				<Sidebar />
-				<Chat selectedChannel={this.selectedChannel()} />
+				<Sidebar socket={this.state.socket} />
+				<Chat
+					socket={this.state.socket}
+					selectedChannel={this.selectedChannel()}
+				/>
 			</div>
 		);
 	}
@@ -33,6 +51,7 @@ const mapStateToProps = (state) => {
 	return {
 		channels: Object.values(state.channels),
 		selectedChannelId: state.misc.selectedChannelId,
+		selectedKomuId: state.misc.selectedKomuId,
 	};
 };
 

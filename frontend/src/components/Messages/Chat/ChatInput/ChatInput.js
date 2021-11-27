@@ -13,13 +13,21 @@ class ChatInput extends React.Component {
 		this.setState({ input: "" });
 	};
 
+	userIsTyping = (e) => {
+		this.setState({ input: e.target.value });
+		if (this.state.input.length > 0) {
+			this.props.onUserIsTyping();
+		}
+	};
+
 	render() {
 		return (
 			<div className="chatInput">
 				<form onSubmit={this.sendMessage}>
 					<input
 						value={this.state.input}
-						onChange={(e) => this.setState({ input: e.target.value })}
+						//onChange={(e) => this.setState({ input: e.target.value })}
+						onChange={this.userIsTyping}
 						placeholder={`Send a message to #${this.props.channelName}`}
 					/>
 					<button type="submit">SEND</button>
