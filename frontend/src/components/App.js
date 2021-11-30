@@ -13,54 +13,58 @@ import JoinKomu from "./Komu/JoinKomu";
 import "./App.css";
 import { connect } from "react-redux";
 import ListKomus from "./Komu/ListKomus";
+import Workspacebar from "./Workspacebar";
 
 class App extends React.Component {
 	render() {
 		return (
-			<div className="ui container app">
-				<Router history={history}>
-					<Header />
-					<Switch>
-						<Route path="/" exact component={LandingPage} />
-						<Route
-							path="/Messages"
-							exact
-							component={
-								this.props.isSignedIn && this.props.selectedKomuId != null
-									? Messages
-									: LandingPage
-							}
-						/>
-						<Route
-							path="/Messages/create_channel"
-							exact
-							component={this.props.isSignedIn ? AddChannel : LandingPage}
-						/>
-						<Route path="/Register" exact component={Register} />
-						<Route path="/Login" exact component={Login} />
-						<Route
-							path="/ShowUser"
-							exact
-							component={this.props.isSignedIn ? ShowUser : LandingPage}
-						/>
-						<Route
-							path="/create-komu"
-							exact
-							component={this.props.isSignedIn ? CreateKomu : LandingPage}
-						/>
-						<Route
-							path="/join-komu"
-							exact
-							component={this.props.isSignedIn ? JoinKomu : LandingPage}
-						/>
-						<Route
-							path="/list-komus"
-							exact
-							component={this.props.isSignedIn ? ListKomus : LandingPage}
-						/>
-					</Switch>
-				</Router>
-			</div>
+			<>
+				<div className="ui container app">
+					<Router history={history}>
+						<Header />
+						<Workspacebar />
+						<Switch>
+							<Route path="/" exact component={LandingPage} />
+							<Route
+								path="/Messages"
+								exact
+								component={
+									this.props.isSignedIn && this.props.selectedKomuId != null
+										? Messages
+										: LandingPage
+								}
+							/>
+							<Route
+								path="/Messages/create_channel"
+								exact
+								component={this.props.isSignedIn ? AddChannel : LandingPage}
+							/>
+							<Route path="/Register" exact component={Register} />
+							<Route path="/Login" exact component={Login} />
+							<Route
+								path="/ShowUser"
+								exact
+								component={this.props.isSignedIn ? ShowUser : LandingPage}
+							/>
+							<Route
+								path="/create-komu"
+								exact
+								component={this.props.isSignedIn ? CreateKomu : LandingPage}
+							/>
+							<Route
+								path="/join-komu"
+								exact
+								component={this.props.isSignedIn ? JoinKomu : LandingPage}
+							/>
+							<Route
+								path="/list-komus"
+								exact
+								component={this.props.isSignedIn ? ListKomus : LandingPage}
+							/>
+						</Switch>
+					</Router>
+				</div>
+			</>
 		);
 	}
 }

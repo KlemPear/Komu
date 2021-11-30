@@ -1,0 +1,14 @@
+.workspace {
+	position: absolute;
+	width: 5%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	background: #33414e;
+}
+
+.item {
+	color: aliceblue;
+	display: inline-block;
+  margin-top: 5em;
+}

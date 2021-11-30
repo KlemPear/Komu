@@ -10,8 +10,15 @@ import { fetchMessages, postMessage, newMessage } from "../../../actions";
 class Chat extends React.Component {
 	constructor(props) {
 		super(props);
+		this.messagesEndRef = React.createRef();
 		this.state = { currentChannelId: null, isTypingInfo: null };
 	}
+
+	scrollToBottom = () => {
+		if(this.messagesEndRef.current){
+			this.messagesEndRef.current.scrollIntoView();
+		}
+	};
 
 	componentDidMount() {
 		const komuId = this.props.selectedKomuId;
@@ -19,6 +26,7 @@ class Chat extends React.Component {
 			this.props.fetchMessages(komuId, this.props.selectedChannelId);
 			this.setState({ currentChannelId: this.props.selectedChannelId });
 		}
+		this.scrollToBottom();
 	}
 
 	componentDidUpdate() {
@@ -47,14 +55,18 @@ class Chat extends React.Component {
 		// 		this.setState({ isTypingInfo: isTypingInfo });
 		// 	}
 		// });
+		this.scrollToBottom();
 	}
 
 	renderMessages() {
 		if (this.props.messages !== null) {
 			return this.props.messages.map((m) => (
-				<div key={m._id}>
-					<Message text={m.text} author={m.author} updatedAt={m.updatedAt} />
-				</div>
+				<>
+					<div key={m._id}>
+						<Message text={m.text} author={m.author} updatedAt={m.updatedAt} />
+					</div>
+					<div ref={this.messagesEndRef} />
+				</>
 			));
 		} else {
 			return (

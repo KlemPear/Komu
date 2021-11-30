@@ -14,10 +14,10 @@ class ChatInput extends React.Component {
 	};
 
 	userIsTyping = (e) => {
-		this.setState({ input: e.target.value });
-		if (this.state.input.length > 0) {
+		if (this.state.input.length !== e.target.value) {
 			this.props.onUserIsTyping();
 		}
+		this.setState({ input: e.target.value });
 	};
 
 	render() {

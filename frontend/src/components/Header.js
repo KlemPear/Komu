@@ -13,17 +13,8 @@ class Header extends React.Component {
 		if (this.props.isSignedIn) {
 			return (
 				<div className="ui secondary pointing menu">
-					<Link to="/" className="item">
-						Home
-					</Link>
-					<Link to="/create-komu" className="item">
-						Create New Komu
-					</Link>
-					<Link to="/join-komu" className="item">
-						Join a Komu
-					</Link>
-					<Link to="/list-komus" className="item">
-						See my Komus
+					<Link to="/calendar" className="item">
+						Calendar
 					</Link>
 					{this.props.selectedKomuId != null ? (
 						<Link to="/Messages" className="item">
@@ -46,18 +37,12 @@ class Header extends React.Component {
 		} else {
 			return (
 				<div className="ui secondary pointing menu">
-					<Link to="/" className="item">
-						Home
-					</Link>
 					<Link to="/Register" className="item">
 						Sign Up
 					</Link>
 					<Link to="/Login" className="item">
 						Sign In
 					</Link>
-					{/* <div className="right menu">
-						<GoogleAuth />
-					</div> */}
 				</div>
 			);
 		}
