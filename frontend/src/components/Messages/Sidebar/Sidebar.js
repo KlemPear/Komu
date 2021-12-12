@@ -23,7 +23,6 @@ class Sidebar extends React.Component {
 	}
 
 	handleChannelClick(channelId) {
-		console.log("channel was clicked!");
 		if (this.props.selectedChannelId == null) {
 			this.props.selectChannel(channelId);
 		}

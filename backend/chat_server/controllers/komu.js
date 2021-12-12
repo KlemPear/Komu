@@ -4,8 +4,19 @@ const User = require("../models/User");
 module.exports.getKomusByUserId = async (req, res, next) => {
 	try {
 		const { userId } = req.query;
-		const user = await User.findById(userId).populate('komus');
+		const user = await User.findById(userId).populate("komus");
 		return res.status(200).json(user.komus);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json(error);
+	}
+};
+
+module.exports.getKomuUsers = async (req, res, next) => {
+	try {
+		const { komuId } = req.params;
+		const komu = await Komu.findById(komuId).populate("users");
+		return res.status(200).json(komu.users);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json(error);
@@ -73,8 +84,22 @@ module.exports.joinKomu = async (req, res, next) => {
 		if (!komu.users?.includes(user._id) && !user.komus?.includes(komu._id)) {
 			komu.users.push(user);
 			user.komus.push(komu);
-			await user.save();
-			await komu.save();
+			User.findOneAndUpdate(
+				{ _id: user._id },
+				user,
+				{ upsert: true },
+				function (err, doc) {
+					if (err) return res.send(500, { error: err });
+				}
+			);
+			Komu.findOneAndUpdate(
+				{ _id: komu._id },
+				komu,
+				{ upsert: true },
+				function (err, doc) {
+					if (err) return res.send(500, { error: err });
+				}
+			);
 			return res.status(200).json({ komu: komu, user: user });
 		}
 		console.log("userAlreadyInKomu");

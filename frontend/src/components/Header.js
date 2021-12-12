@@ -13,6 +13,11 @@ class Header extends React.Component {
 		if (this.props.isSignedIn) {
 			return (
 				<div className="ui secondary pointing menu">
+					{this.props.selectedKomuId != null ? (
+						<Link to="/show-komu" className="item">
+							{this.props.selectedKomu.name}
+						</Link>
+					) : null}
 					<Link to="/calendar" className="item">
 						Calendar
 					</Link>
@@ -21,9 +26,9 @@ class Header extends React.Component {
 							Messages
 						</Link>
 					) : null}
-					<Link to="/ShowUser" className="right menu item">
+					{/* <Link to="/ShowUser" className="right menu item">
 						Profile
-					</Link>
+					</Link> */}
 					<Link to="/">
 						<button
 							className="ui btn btn-primary"
@@ -53,6 +58,7 @@ const mapStateToProps = (state) => {
 	return {
 		isSignedIn: state.auth.isSignedIn,
 		selectedKomuId: state.misc.selectedKomuId,
+		selectedKomu: state.komus[state.misc.selectedKomuId],
 	};
 };
 

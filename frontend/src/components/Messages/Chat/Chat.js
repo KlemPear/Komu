@@ -15,7 +15,7 @@ class Chat extends React.Component {
 	}
 
 	scrollToBottom = () => {
-		if(this.messagesEndRef.current){
+		if (this.messagesEndRef.current) {
 			this.messagesEndRef.current.scrollIntoView();
 		}
 	};
@@ -60,19 +60,25 @@ class Chat extends React.Component {
 
 	renderMessages() {
 		if (this.props.messages !== null) {
-			return this.props.messages.map((m) => (
+			return (
 				<>
-					<div key={m._id}>
-						<Message text={m.text} author={m.author} updatedAt={m.updatedAt} />
-					</div>
+					{this.props.messages.map((m) => (
+						<div key={m._id}>
+							<Message
+								text={m.text}
+								author={m.author}
+								updatedAt={m.updatedAt}
+							/>
+						</div>
+					))}
 					<div ref={this.messagesEndRef} />
 				</>
-			));
+			);
 		} else {
 			return (
-				<div>
+				<>
 					<h3>Say something, don't be shy!</h3>
-				</div>
+				</>
 			);
 		}
 	}

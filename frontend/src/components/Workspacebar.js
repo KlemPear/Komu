@@ -14,8 +14,8 @@ class Workspacebar extends React.Component {
 		if (this.props.isSignedIn) {
 			return (
 				<div className="workspace">
-					<Link to="/" className="item">
-						Home
+					<Link to="/show-user" className="item">
+						Profile
 					</Link>
 					<Link to="/create-komu" className="item">
 						Create New Komu

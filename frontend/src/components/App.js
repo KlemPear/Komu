@@ -14,6 +14,7 @@ import "./App.css";
 import { connect } from "react-redux";
 import ListKomus from "./Komu/ListKomus";
 import Workspacebar from "./Workspacebar";
+import ShowKomu from "./Komu/ShowKomu";
 
 class App extends React.Component {
 	render() {
@@ -42,7 +43,7 @@ class App extends React.Component {
 							<Route path="/Register" exact component={Register} />
 							<Route path="/Login" exact component={Login} />
 							<Route
-								path="/ShowUser"
+								path="/show-user"
 								exact
 								component={this.props.isSignedIn ? ShowUser : LandingPage}
 							/>
@@ -60,6 +61,15 @@ class App extends React.Component {
 								path="/list-komus"
 								exact
 								component={this.props.isSignedIn ? ListKomus : LandingPage}
+							/>
+							<Route
+								path="/show-komu"
+								exact
+								component={
+									this.props.isSignedIn && this.props.selectedKomuId != null
+										? ShowKomu
+										: LandingPage
+								}
 							/>
 						</Switch>
 					</Router>
