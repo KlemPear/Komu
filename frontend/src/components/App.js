@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import ListKomus from "./Komu/ListKomus";
 import Workspacebar from "./Workspacebar";
 import ShowKomu from "./Komu/ShowKomu";
+import Calendar from "./Calendar";
+
 
 class App extends React.Component {
 	render() {
@@ -23,7 +25,7 @@ class App extends React.Component {
 				<div className="ui container app">
 					<Router history={history}>
 						<Header />
-						<Workspacebar />
+						{this.props.isSignedIn ? <Workspacebar /> : null}
 						<Switch>
 							<Route path="/" exact component={LandingPage} />
 							<Route
@@ -70,6 +72,11 @@ class App extends React.Component {
 										? ShowKomu
 										: LandingPage
 								}
+							/>
+							<Route
+								path="/calendar"
+								exact
+								component={this.props.isSignedIn ? Calendar : LandingPage}
 							/>
 						</Switch>
 					</Router>
