@@ -8,9 +8,9 @@ const EventSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 		},
-    name: {
-      type: String
-    },
+		name: {
+			type: String,
+		},
 		description: {
 			type: String,
 		},
@@ -18,10 +18,15 @@ const EventSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Komu",
 		},
-		guestsUserIds: [{ type: String }],
-    date: {
-      type: Date,
-    },
+		guests: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "User",
+			},
+		],
+		date: {
+			type: Date,
+		},
 	},
 	{
 		timestamps: true,

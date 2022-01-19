@@ -58,9 +58,9 @@ module.exports.editKomu = async (req, res, next) => {
 		const komu = await Komu.findByIdAndUpdate(komuId, req.body, {
 			returnDocument: "after",
 		});
-		return res.status(200).json({ success: true, komu });
+		return res.status(200).json(komu);
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		return res.status(500).json(error);
 	}
 };
 
@@ -70,7 +70,7 @@ module.exports.deleteKomu = async (req, res, next) => {
 		const deleteKomu = await Komu.findByIdAndDelete(komuId);
 		return res.status(200).json({ success: true, deleteKomu });
 	} catch (error) {
-		return res.status(500).json({ success: false, error: error });
+		return res.status(500).json(error);
 	}
 };
 
