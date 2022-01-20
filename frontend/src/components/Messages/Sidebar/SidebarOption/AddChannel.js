@@ -10,7 +10,7 @@ class AddChannel extends React.Component {
 	renderActions() {
 		return (
 			<React.Fragment>
-				<Link to="/Messages" className="ui button">
+				<Link to="/messages" className="ui button">
 					Cancel
 				</Link>
 			</React.Fragment>
@@ -34,7 +34,7 @@ class AddChannel extends React.Component {
 				title="Add Channel"
 				content={this.renderContent()}
 				actions={this.renderActions()}
-				onDismiss={() => history.push("/Messages")}
+				onDismiss={() => history.push("/messages")}
 			/>
 		);
 	}

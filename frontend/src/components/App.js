@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import ListKomus from "./Komu/ListKomus";
 import Workspacebar from "./Workspacebar";
 import ShowKomu from "./Komu/ShowKomu";
-import Calendar from "./Calendar";
+import Calendar from "./Calendar/Calendar";
 
 
 class App extends React.Component {
@@ -29,7 +29,7 @@ class App extends React.Component {
 						<Switch>
 							<Route path="/" exact component={LandingPage} />
 							<Route
-								path="/Messages"
+								path="/messages"
 								exact
 								component={
 									this.props.isSignedIn && this.props.selectedKomuId != null
@@ -38,12 +38,12 @@ class App extends React.Component {
 								}
 							/>
 							<Route
-								path="/Messages/create_channel"
+								path="/messages/create_channel"
 								exact
 								component={this.props.isSignedIn ? AddChannel : LandingPage}
 							/>
-							<Route path="/Register" exact component={Register} />
-							<Route path="/Login" exact component={Login} />
+							<Route path="/register" exact component={Register} />
+							<Route path="/login" exact component={Login} />
 							<Route
 								path="/show-user"
 								exact

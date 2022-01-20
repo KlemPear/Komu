@@ -22,7 +22,7 @@ class Header extends React.Component {
 						Calendar
 					</Link>
 					{this.props.selectedKomuId != null ? (
-						<Link to="/Messages" className="item">
+						<Link to="/messages" className="item">
 							Messages
 						</Link>
 					) : null}
@@ -42,10 +42,10 @@ class Header extends React.Component {
 		} else {
 			return (
 				<div className="ui secondary pointing menu">
-					<Link to="/Register" className="item">
+					<Link to="/register" className="item">
 						Sign Up
 					</Link>
-					<Link to="/Login" className="item">
+					<Link to="/login" className="item">
 						Sign In
 					</Link>
 				</div>
