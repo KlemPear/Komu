@@ -4,7 +4,7 @@ import Modal from "../Modal";
 import { Link } from "react-router-dom";
 import EventForm from "./EventForm";
 
-class Event extends React.Component {
+class AddEvent extends React.Component {
 	renderActions() {
 		return (
 			<React.Fragment>
@@ -42,4 +42,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(Event);
+export default connect(mapStateToProps, null)(AddEvent);

@@ -4,13 +4,19 @@ import FullCalendar, { formatDate } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import Event from "./Event";
+import AddEvent from "./AddEvent";
+import ShowEvent from "./ShowEvent";
 import { formValues } from "redux-form";
 
 class Calendar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { toggleAddEventModal: false, selectInfo: null };
+		this.state = {
+			toggleAddEventModal: false,
+			toggleShowEventModal: false,
+			selectInfo: null,
+			eventToShow: null,
+		};
 	}
 
 	render() {
@@ -38,25 +44,42 @@ class Calendar extends React.Component {
 					eventChange={this.handleEventChange} // called for drag-n-drop/resize
 					eventRemove={this.handleEventRemove}
 				/>
-        {this.state.toggleAddEventModal ? <Event onEventSubmit={this.onEventSubmit} toggle={this.onEventToggle} /> : null}
+				{this.state.toggleAddEventModal ? (
+					<AddEvent
+						onEventSubmit={this.onEventSubmit}
+						toggle={this.onAddEventToggle}
+					/>
+				) : null}
+				{this.state.toggleShowEventModal ? (
+					<ShowEvent
+						event={this.state.eventToShow}
+						toggle={this.onShowEventToggle}
+					/>
+				) : null}
 			</div>
 		);
 	}
 
 	// Event toggle
-	onEventToggle = () => {
+	onShowventToggle = () => {
+		this.setState({ toggleShowEventModal: !this.state.toggleShowEventModal });
+		this.setState({ eventToShow: null });
+	};
+
+	onAddEventToggle = () => {
 		this.setState({ toggleAddEventModal: !this.state.toggleAddEventModal });
 		this.setState({ selectInfo: null });
-	}
-	
+	};
+
 	onEventSubmit = (formValues) => {
 		let calendarApi = this.state.selectInfo.view.calendar;
-		const {name, description} = formValues;
+		const { name, description, guests } = formValues;
 		calendarApi.addEvent(
 			{
 				// will render immediately. will call handleEventAdd
 				title: name,
 				description,
+				guests,
 				start: this.state.selectInfo.startStr,
 				end: this.state.selectInfo.endStr,
 				allDay: this.state.selectInfo.allDay,
@@ -64,21 +87,30 @@ class Calendar extends React.Component {
 			true
 		); // temporary=true, will get overwritten when reducer gives new events
 		calendarApi.unselect();
-		this.setState({ toggleAddEventModal: !this.state.toggleAddEventModal });
-		this.setState({ selectInfo: null });
+		this.onAddEventToggle();
 	};
 
 	// handlers for user actions
 	// ------------------------------------------------------------------------------------------
 
 	handleDateSelect = (selectInfo) => {
-		this.setState({toggleAddEventModal: !this.state.toggleAddEventModal});
+		this.setState({ toggleAddEventModal: !this.state.toggleAddEventModal });
 		this.setState({ selectInfo: selectInfo });
 	};
 
 	handleEventClick = (clickInfo) => {
-		// do a ShowEvent Modal for this
-		this.setState({ toggleAddEventModal: !this.state.toggleAddEventModal });
+		const { description, guests } = clickInfo.event.extendedProps;
+		const { allDay, startStr, endStr, title } = clickInfo.event;
+		const eventToShow = {
+			allDay,
+			startStr,
+			endStr,
+			title,
+			description,
+			guests,
+		};
+		this.setState({ eventToShow: eventToShow });
+		this.setState({ toggleShowEventModal: !this.state.toggleShowEventModal });
 	};
 
 	// handlers that initiate reads/writes via the 'action' props
@@ -96,14 +128,21 @@ class Calendar extends React.Component {
 function renderEventContent(eventInfo) {
 	return (
 		<>
-			<b>{eventInfo.timeText}</b>
-			<i>{eventInfo.event.title}</i>
-			<br />
+			<b>{eventInfo.timeText}</b> -<i>{eventInfo.event.title}</i> <br />
+			<b>Description: </b>
 			<i>{eventInfo.event.extendedProps.description}</i>
+			<br />
+			<b>Guests: </b>
+			<i>{eventInfo.event.extendedProps.guests}</i>
+			<br />
 		</>
 	);
 }
 
-const mapStateToProps = () => {};
+const mapStateToProps = (state) => {
+	return {
+		selectedKomuId: state.misc.selectedKomuId,
+	};
+};
 
 export default connect(mapStateToProps, null)(Calendar);
