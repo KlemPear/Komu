@@ -3,6 +3,7 @@ module.exports.hasSelectedAKomu = async (req, res, next) => {
     if(req.headers.komu_id){
       next();
     } else {
+      console.log("No Header");
       return res.status(400).json({error: "Could not find a komu_id header in the request."})
     }
 	} catch (error) {

@@ -3,7 +3,7 @@ const Komu = require("../models/Komu");
 
 module.exports.getAllEvents = async (req, res, next) => {
 	try {
-		const komuId = req.headers.komu_id;
+		const komuId = req.params.komuId;
 		const events = await Event.find({ komu: komuId })
 			.populate("author")
 			.populate("guests")
@@ -30,10 +30,9 @@ module.exports.getEventById = async (req, res, next) => {
 
 module.exports.createEvent = async (req, res, next) => {
 	try {
-		const komuId = req.headers.komu_id;
+		const komuId = req.params.komuId;
 		const event = req.body;
 		event.komu = await Komu.findById(komuId);
-		console.log(event);
 		const newEvent = new Event(event);
 		console.log(newEvent);
 		newEvent.save();

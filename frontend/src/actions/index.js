@@ -11,10 +11,12 @@ import {
 	messagesTypes,
 	usersTypes,
 	komuTypes,
+	calendarTypes,
 } from "./types";
 import channels from "../apis/channels";
 import users from "../apis/users";
 import komu from "../apis/komu";
+import calendar from "../apis/calendar";
 import history from "../util/History";
 
 //#region Users
@@ -155,6 +157,17 @@ export const joinKomu = (formValues) => async (dispatch) => {
 export const selectKomu = (komuId) => async (dispatch) => {
 	dispatch({ type: komuTypes.SELECT_KOMU, payload: komuId });
 	dispatch({ type: FLUSH_CHANNELS, payload: komuId });
+};
+
+//#endregion
+
+//#region Calendar
+
+export const createEvent = (formValues, komuId) => async (dispatch) => {
+	console.log(komuId);
+	const response = await calendar.post(`/${komuId}`, formValues);
+	console.log(response);
+	dispatch({ type: calendarTypes.CREATE_EVENT, payload: response.data });
 };
 
 //#endregion

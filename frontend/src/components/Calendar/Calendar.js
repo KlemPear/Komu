@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import AddEvent from "./AddEvent";
 import ShowEvent from "./ShowEvent";
-import { formValues } from "redux-form";
+import { createEvent } from "../../actions";
 
 class Calendar extends React.Component {
 	constructor(props) {
@@ -74,6 +74,7 @@ class Calendar extends React.Component {
 	onEventSubmit = (formValues) => {
 		let calendarApi = this.state.selectInfo.view.calendar;
 		const { name, description, guests } = formValues;
+		this.props.createEvent(formValues, this.props.selectedKomuId);
 		calendarApi.addEvent(
 			{
 				// will render immediately. will call handleEventAdd
@@ -145,4 +146,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(Calendar);
+export default connect(mapStateToProps, { createEvent })(Calendar);

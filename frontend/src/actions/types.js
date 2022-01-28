@@ -27,3 +27,11 @@ export const komuTypes = {
 	LIST_USER_KOMUS: "LIST_USER_KOMUS",
 	SELECT_KOMU: "SELECT_KOMU",
 };
+
+export const calendarTypes = {
+	CREATE_EVENT: "CREATE_EVENT",
+	GET_EVENTS: "GET_EVENTS",
+	GET_EVENT: "GET_EVENT",
+	EDIT_EVENT: "EDIT_EVENT",
+	DELETE_EVENT: "DELETE_EVENT",
+};
