@@ -61,7 +61,7 @@ class Calendar extends React.Component {
 	}
 
 	// Event toggle
-	onShowventToggle = () => {
+	onShowEventToggle = () => {
 		this.setState({ toggleShowEventModal: !this.state.toggleShowEventModal });
 		this.setState({ eventToShow: null });
 	};
