@@ -48,7 +48,6 @@ module.exports.onCreateUser = async (req, res, next) => {
 			return res.status(200).json(registeredUser);
 		});
 		req.session.user = registeredUser;
-		return res.status(200).json(registeredUser);
 	} catch (error) {
 		return res.status(500).json(error);
 	}
