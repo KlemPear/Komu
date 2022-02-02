@@ -43,7 +43,14 @@ module.exports.createKomu = async (req, res, next) => {
 		});
 		komu.users.push(user);
 		user.komus.push(komu);
-		user.save();
+		User.findOneAndUpdate(
+			{ _id: user._id },
+			user,
+			{ upsert: true },
+			function (err, doc) {
+				if (err) return res.send(500, { error: err });
+			}
+		);
 		komu.save();
 		return res.status(200).json(komu);
 	} catch (error) {

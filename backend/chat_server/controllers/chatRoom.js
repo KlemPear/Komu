@@ -5,8 +5,6 @@ const Komu = require("../models/Komu");
 
 module.exports.createChatRoom = async (req, res, next) => {
 	try {
-		console.log("params: ", req.params);
-		console.log("body: ", req.body);
 		const { komuId } = req.params;
 		const { name, description, usersId } = req.body;
 		const users = await User.findUsersByIds(usersId);
@@ -17,7 +15,6 @@ module.exports.createChatRoom = async (req, res, next) => {
 			users: users,
 			komu: komu,
 		});
-		console.log("chatroom: ", newChatRoom);
 		await newChatRoom.save();
 		return res.status(200).json(newChatRoom);
 	} catch (error) {
@@ -39,7 +36,7 @@ module.exports.postMessage = async (req, res, next) => {
 		await newMessage.save();
 		return res.status(200).json(newMessage);
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 		return res.status(500).json(error);
 	}
 };

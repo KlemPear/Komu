@@ -1,4 +1,4 @@
-import { komuTypes } from "../actions/types";
+import { komuTypes, usersTypes } from "../actions/types";
 import _ from "lodash";
 
 const komuReducer = (state = {}, action) => {
@@ -18,7 +18,8 @@ const komuReducer = (state = {}, action) => {
 				...state,
 				..._.mapKeys(action.payload, "_id"),
 			};
-
+		case usersTypes.LOGOUT_USER:
+			return {};
 		default:
 			return state;
 	}

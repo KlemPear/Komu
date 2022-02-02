@@ -1,4 +1,4 @@
-import { SELECT_CHANNEL, komuTypes } from "../actions/types";
+import { SELECT_CHANNEL, komuTypes, usersTypes } from "../actions/types";
 
 const INITIAL_STATE = {
 	selectedChannelId: null,
@@ -14,6 +14,8 @@ const miscReducer = (state = INITIAL_STATE, action) => {
 			return { ...state, userAlreadyInKomu: true };
 		case komuTypes.SELECT_KOMU:
 			return { ...state, selectedKomuId: action.payload };
+		case usersTypes.LOGOUT_USER:
+			return {};
 		default:
 			return state;
 	}

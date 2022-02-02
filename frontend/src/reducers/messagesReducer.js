@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { messagesTypes } from "../actions/types";
+import { messagesTypes, usersTypes } from "../actions/types";
 
 const messagesReducer = (state = {}, action) => {
 	switch (action.type) {
@@ -7,6 +7,8 @@ const messagesReducer = (state = {}, action) => {
 			return { ..._.mapKeys(action.payload, "_id") };
 		case messagesTypes.POST_MESSAGE:
 			return { ...state, [action.payload._id]: action.payload };
+		case usersTypes.LOGOUT_USER:
+			return {};
 		default:
 			return state;
 	}
