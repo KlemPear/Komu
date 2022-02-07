@@ -74,7 +74,8 @@ class Calendar extends React.Component {
 	onEventSubmit = (formValues) => {
 		let calendarApi = this.state.selectInfo.view.calendar;
 		const { name, description, guests } = formValues;
-		this.props.createEvent(formValues, this.props.selectedKomuId);
+		console.log("Event formValues: ", formValues);
+		//this.props.createEvent(formValues, this.props.selectedKomuId);
 		calendarApi.addEvent(
 			{
 				// will render immediately. will call handleEventAdd

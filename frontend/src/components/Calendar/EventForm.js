@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import CustomSelect from "../Utils/CustomSelect";
 
 class EventForm extends React.Component {
 	renderError({ error, touched }) {
@@ -23,12 +24,23 @@ class EventForm extends React.Component {
 		);
 	};
 
+	guestOptions = [
+		{ value: "001", label: "Clem" },
+		{ value: "002", label: "Hugo" },
+		{ value: "003", label: "Paul" },
+		{ value: "004", label: "Alyssa" },
+	];
+
 	renderGuestsInput = ({ input, label, meta }) => {
+		const guestInput = (selectedGuest) => {
+			input.onChange(selectedGuest?.map((guest) => guest.value));
+		};
+
 		const className = `field ${meta.error && meta.touched ? "error" : ""}`;
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<input {...input} autoComplete="off" />
+				<CustomSelect Options={this.guestOptions} onSelect={guestInput} />
 				{this.renderError(meta)}
 			</div>
 		);
@@ -77,7 +89,7 @@ const validate = (formValues) => {
 	if (!formValues.description) {
 		errors.description = "You must enter a short description";
 	}
-  if (!formValues.guests) {
+	if (!formValues.guests) {
 		errors.guests = "You must enter a user ID";
 	}
 	return errors;

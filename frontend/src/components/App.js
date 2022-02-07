@@ -17,7 +17,6 @@ import Workspacebar from "./Workspacebar";
 import ShowKomu from "./Komu/ShowKomu";
 import Calendar from "./Calendar/Calendar";
 
-
 class App extends React.Component {
 	render() {
 		return (
@@ -76,7 +75,11 @@ class App extends React.Component {
 							<Route
 								path="/calendar"
 								exact
-								component={this.props.isSignedIn ? Calendar : LandingPage}
+								component={
+									this.props.isSignedIn && this.props.selectedKomuId != null
+										? Calendar
+										: LandingPage
+								}
 							/>
 						</Switch>
 					</Router>

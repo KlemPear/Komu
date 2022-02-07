@@ -18,17 +18,16 @@ class Header extends React.Component {
 							{this.props.selectedKomu.name}
 						</Link>
 					) : null}
-					<Link to="/calendar" className="item">
-						Calendar
-					</Link>
+					{this.props.selectedKomuId != null ? (
+						<Link to="/calendar" className="item">
+							Calendar
+						</Link>
+					) : null}
 					{this.props.selectedKomuId != null ? (
 						<Link to="/messages" className="item">
 							Messages
 						</Link>
 					) : null}
-					{/* <Link to="/ShowUser" className="right menu item">
-						Profile
-					</Link> */}
 					<Link to="/">
 						<button
 							className="ui btn btn-primary"

@@ -20,7 +20,12 @@ class AddEvent extends React.Component {
 	};
 
 	renderContent = () => {
-		return <EventForm onSubmit={this.onSubmit} />;
+		return (
+			<EventForm
+				onSubmit={this.onSubmit}
+				komuUsersId={this.props.komuUsersId}
+			/>
+		);
 	};
 
 	render() {
@@ -39,6 +44,7 @@ const mapStateToProps = (state) => {
 	return {
 		selectedKomuId: state.misc.selectedKomuId,
 		user: state.auth.user,
+		komuUsersId: Object.values(state.komus[state.misc.selectedKomuId].users),
 	};
 };
 
