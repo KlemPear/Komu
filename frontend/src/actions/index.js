@@ -164,10 +164,13 @@ export const selectKomu = (komuId) => async (dispatch) => {
 //#region Calendar
 
 export const createEvent = (formValues, komuId) => async (dispatch) => {
-	console.log(komuId);
 	const response = await calendar.post(`/${komuId}`, formValues);
-	console.log(response);
 	dispatch({ type: calendarTypes.CREATE_EVENT, payload: response.data });
+};
+
+export const getEvents = (komuId) => async (dispatch) => {
+	const response = await calendar.get(`/${komuId}`);
+	dispatch({ type: calendarTypes.FETCH_EVENTS, payload: response.data });
 };
 
 //#endregion

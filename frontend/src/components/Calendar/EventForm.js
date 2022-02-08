@@ -24,13 +24,6 @@ class EventForm extends React.Component {
 		);
 	};
 
-	guestOptions = [
-		{ value: "001", label: "Clem" },
-		{ value: "002", label: "Hugo" },
-		{ value: "003", label: "Paul" },
-		{ value: "004", label: "Alyssa" },
-	];
-
 	renderGuestsInput = ({ input, label, meta }) => {
 		const guestInput = (selectedGuest) => {
 			input.onChange(selectedGuest?.map((guest) => guest.value));
@@ -40,7 +33,7 @@ class EventForm extends React.Component {
 		return (
 			<div className={className}>
 				<label>{label}</label>
-				<CustomSelect Options={this.guestOptions} onSelect={guestInput} />
+				<CustomSelect Options={this.props.komuUsersOptions} onSelect={guestInput} />
 				{this.renderError(meta)}
 			</div>
 		);
@@ -60,9 +53,9 @@ class EventForm extends React.Component {
 					className="ui form error"
 				>
 					<Field
-						name="name"
+						name="title"
 						component={this.renderInput}
-						label="Enter event name"
+						label="Enter event title"
 					/>
 					<Field
 						name="description"
@@ -83,8 +76,8 @@ class EventForm extends React.Component {
 
 const validate = (formValues) => {
 	const errors = {};
-	if (!formValues.name) {
-		errors.name = "You must enter a name for this event";
+	if (!formValues.title) {
+		errors.name = "You must enter a title for this event";
 	}
 	if (!formValues.description) {
 		errors.description = "You must enter a short description";

@@ -4,10 +4,7 @@ const Komu = require("../models/Komu");
 module.exports.getAllEvents = async (req, res, next) => {
 	try {
 		const komuId = req.params.komuId;
-		const events = await Event.find({ komu: komuId })
-			.populate("author")
-			.populate("guests")
-			.populate("komu");
+		const events = await Event.find({ komu: komuId });
 		return res.status(200).json(events);
 	} catch (error) {
 		console.log(error);
@@ -17,10 +14,7 @@ module.exports.getAllEvents = async (req, res, next) => {
 
 module.exports.getEventById = async (req, res, next) => {
 	try {
-		const event = await Event.findById(req.params.eventId)
-			.populate("author")
-			.populate("guests")
-			.populate("komu");
+		const event = await Event.findById(req.params.eventId);
 		return res.status(200).json(event);
 	} catch (error) {
 		console.log(error);

@@ -5,6 +5,7 @@ import channelReducer from "./channelReducer";
 import miscReducer from "./miscReducer";
 import messagesReducer from "./messagesReducer";
 import komuReducer from "./komuReducer";
+import eventReducer from "./eventReducer";
 
 export default combineReducers({
 	auth: authReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
 	misc: miscReducer,
 	messages: messagesReducer,
 	komus: komuReducer,
+	events: eventReducer,
 });

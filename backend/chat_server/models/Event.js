@@ -8,7 +8,7 @@ const EventSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 		},
-		name: {
+		title: {
 			type: String,
 		},
 		description: {
@@ -24,8 +24,14 @@ const EventSchema = new Schema(
 				ref: "User",
 			},
 		],
-		date: {
+		start: {
 			type: Date,
+		},
+		end: {
+			type: Date,
+		},
+		allDay: {
+			type: Boolean,
 		},
 	},
 	{

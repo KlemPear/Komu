@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import AddEvent from "./AddEvent";
 import ShowEvent from "./ShowEvent";
-import { createEvent } from "../../actions";
+import { createEvent, getEvents } from "../../actions";
 
 class Calendar extends React.Component {
 	constructor(props) {
@@ -18,6 +18,22 @@ class Calendar extends React.Component {
 			eventToShow: null,
 		};
 	}
+
+	componentDidMount() {
+		this.props.getEvents(this.props.selectedKomuId);
+	}
+
+	// componentDidUpdate(prevProps) {
+	// 	if (
+	// 		!Object.keys(this.props.komuEvents).every((k) =>
+	// 			Object.keys(prevProps.komuEvents).includes(k)
+	// 		)
+	// 	) {
+	// 		console.log("PrevProps: ", prevProps.komuEvents);
+	// 		console.log("props: ", this.props.komuEvents);
+	// 		this.props.getEvents(this.props.selectedKomuId);
+	// 	}
+	// }
 
 	render() {
 		return (
@@ -37,7 +53,7 @@ class Calendar extends React.Component {
 					weekends={true}
 					datesSet={this.handleDates}
 					select={this.handleDateSelect}
-					events={this.props.events}
+					events={this.props.komuEvents}
 					eventContent={renderEventContent} // custom render function
 					eventClick={this.handleEventClick}
 					eventAdd={this.handleEventAdd}
@@ -73,21 +89,19 @@ class Calendar extends React.Component {
 
 	onEventSubmit = (formValues) => {
 		let calendarApi = this.state.selectInfo.view.calendar;
-		const { name, description, guests } = formValues;
-		console.log("Event formValues: ", formValues);
-		//this.props.createEvent(formValues, this.props.selectedKomuId);
-		calendarApi.addEvent(
-			{
-				// will render immediately. will call handleEventAdd
-				title: name,
-				description,
-				guests,
-				start: this.state.selectInfo.startStr,
-				end: this.state.selectInfo.endStr,
-				allDay: this.state.selectInfo.allDay,
-			},
-			true
-		); // temporary=true, will get overwritten when reducer gives new events
+		const { title, description, guests } = formValues;
+		const event = {
+			author: this.props.authorId,
+			title,
+			description,
+			guests,
+			start: this.state.selectInfo.startStr,
+			end: this.state.selectInfo.endStr,
+			allDay: this.state.selectInfo.allDay,
+		};
+		//console.log("Event: ", event);
+		this.props.createEvent(event, this.props.selectedKomuId);
+		calendarApi.addEvent(event, true); // temporary=true, will get overwritten when reducer gives new events
 		calendarApi.unselect();
 		this.onAddEventToggle();
 	};
@@ -144,7 +158,11 @@ function renderEventContent(eventInfo) {
 const mapStateToProps = (state) => {
 	return {
 		selectedKomuId: state.misc.selectedKomuId,
+		authorId: state.auth.user._id,
+		komuEvents: Object.values(state.events).filter(
+			(e) => e.komu === state.misc.selectedKomuId
+		),
 	};
 };
 
-export default connect(mapStateToProps, { createEvent })(Calendar);
+export default connect(mapStateToProps, { createEvent, getEvents })(Calendar);

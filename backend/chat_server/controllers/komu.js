@@ -4,7 +4,13 @@ const User = require("../models/User");
 module.exports.getKomusByUserId = async (req, res, next) => {
 	try {
 		const { userId } = req.query;
-		const user = await User.findById(userId).populate("komus");
+		const user = await User.findById(userId).populate({
+			path: "komus",
+			populate: {
+				path: "users",
+				model: "User",
+			},
+		});
 		return res.status(200).json(user.komus);
 	} catch (error) {
 		console.log(error);
@@ -86,8 +92,6 @@ module.exports.joinKomu = async (req, res, next) => {
 		const { externalId, userId } = req.body;
 		const komu = await Komu.findOne({ externalId: externalId });
 		const user = await User.findById(userId);
-		console.log("Komu: ", komu);
-		console.log("User:  ", user);
 		if (!komu.users?.includes(user._id) && !user.komus?.includes(komu._id)) {
 			komu.users.push(user);
 			user.komus.push(komu);
@@ -109,7 +113,6 @@ module.exports.joinKomu = async (req, res, next) => {
 			);
 			return res.status(200).json({ komu: komu, user: user });
 		}
-		console.log("userAlreadyInKomu");
 		return res.status(200).json({ userAlreadyInKomu: true });
 	} catch (error) {
 		console.log(error);
