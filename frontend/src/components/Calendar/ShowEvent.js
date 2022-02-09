@@ -10,6 +10,12 @@ class ShowEvent extends React.Component {
 				<Link to="/calendar" onClick={this.props.toggle} className="ui button">
 					Back
 				</Link>
+				<Link to="/calendar" onClick={this.props.toggle} className="ui blue button">
+					Edit
+				</Link>
+				<Link to="/calendar" onClick={this.props.delete} className="ui negative button">
+					Delete
+				</Link>
 			</React.Fragment>
 		);
 	}

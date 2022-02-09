@@ -163,14 +163,24 @@ export const selectKomu = (komuId) => async (dispatch) => {
 
 //#region Calendar
 
-export const createEvent = (formValues, komuId) => async (dispatch) => {
-	const response = await calendar.post(`/${komuId}`, formValues);
+export const createEvent = (event, komuId) => async (dispatch) => {
+	const response = await calendar.post(`/${komuId}`, event);
 	dispatch({ type: calendarTypes.CREATE_EVENT, payload: response.data });
 };
 
 export const getEvents = (komuId) => async (dispatch) => {
 	const response = await calendar.get(`/${komuId}`);
 	dispatch({ type: calendarTypes.FETCH_EVENTS, payload: response.data });
+};
+
+export const editEvent = (event) => async (dispatch) => {
+	const response = await calendar.put(`/${event._id}`, event);
+	dispatch({ type: calendarTypes.EDIT_EVENT, payload: response.data });
+};
+
+export const deleteEvent = (eventId) => async (dispatch) => {
+	const response = await calendar.delete(`/${eventId}`);
+	dispatch({ type: calendarTypes.DELETE_EVENT, payload: response.data });
 };
 
 //#endregion

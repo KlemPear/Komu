@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import FullCalendar, { formatDate } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import AddEvent from "./AddEvent";
 import ShowEvent from "./ShowEvent";
-import { createEvent, getEvents } from "../../actions";
+import { createEvent, getEvents, editEvent, deleteEvent } from "../../actions";
 
 class Calendar extends React.Component {
 	constructor(props) {
@@ -14,6 +14,7 @@ class Calendar extends React.Component {
 		this.state = {
 			toggleAddEventModal: false,
 			toggleShowEventModal: false,
+			toggleNewEventRefresh: false,
 			selectInfo: null,
 			eventToShow: null,
 		};
@@ -23,17 +24,14 @@ class Calendar extends React.Component {
 		this.props.getEvents(this.props.selectedKomuId);
 	}
 
-	// componentDidUpdate(prevProps) {
-	// 	if (
-	// 		!Object.keys(this.props.komuEvents).every((k) =>
-	// 			Object.keys(prevProps.komuEvents).includes(k)
-	// 		)
-	// 	) {
-	// 		console.log("PrevProps: ", prevProps.komuEvents);
-	// 		console.log("props: ", this.props.komuEvents);
-	// 		this.props.getEvents(this.props.selectedKomuId);
-	// 	}
-	// }
+	componentDidUpdate() {
+		if (this.state.toggleNewEventRefresh) {
+			this.props.getEvents(this.props.selectedKomuId);
+			this.setState({
+				toggleNewEventRefresh: !this.state.toggleNewEventRefresh,
+			});
+		}
+	}
 
 	render() {
 		return (
@@ -70,6 +68,7 @@ class Calendar extends React.Component {
 					<ShowEvent
 						event={this.state.eventToShow}
 						toggle={this.onShowEventToggle}
+						delete={this.onEventDelete}
 					/>
 				) : null}
 			</div>
@@ -99,11 +98,16 @@ class Calendar extends React.Component {
 			end: this.state.selectInfo.endStr,
 			allDay: this.state.selectInfo.allDay,
 		};
-		//console.log("Event: ", event);
 		this.props.createEvent(event, this.props.selectedKomuId);
-		calendarApi.addEvent(event, true); // temporary=true, will get overwritten when reducer gives new events
+		//calendarApi.addEvent(event, true); // temporary=true, will get overwritten when reducer gives new events
 		calendarApi.unselect();
 		this.onAddEventToggle();
+		this.setState({ toggleNewEventRefresh: true });
+	};
+
+	onEventDelete = () => {
+		this.props.deleteEvent(this.state.eventToShow._id);
+		this.onShowEventToggle();
 	};
 
 	// handlers for user actions
@@ -115,7 +119,7 @@ class Calendar extends React.Component {
 	};
 
 	handleEventClick = (clickInfo) => {
-		const { description, guests } = clickInfo.event.extendedProps;
+		const { description, guests, _id, komu } = clickInfo.event.extendedProps;
 		const { allDay, startStr, endStr, title } = clickInfo.event;
 		const eventToShow = {
 			allDay,
@@ -124,6 +128,8 @@ class Calendar extends React.Component {
 			title,
 			description,
 			guests,
+			_id,
+			komu,
 		};
 		this.setState({ eventToShow: eventToShow });
 		this.setState({ toggleShowEventModal: !this.state.toggleShowEventModal });
@@ -136,9 +142,26 @@ class Calendar extends React.Component {
 
 	handleEventAdd = (addInfo) => {};
 
-	handleEventChange = (changeInfo) => {};
+	handleEventChange = (changeInfo) => {
+		const { author, description, guests, komu, _id } =
+			changeInfo.event.extendedProps;
+		const updatedEvent = {
+			author,
+			title: changeInfo.event.title,
+			description,
+			guests,
+			komu,
+			_id,
+			start: changeInfo.event.startStr,
+			end: changeInfo.event.endStr,
+			allDay: changeInfo.event.allDay,
+		};
+		this.props.editEvent(updatedEvent);
+	};
 
-	handleEventRemove = (removeInfo) => {};
+	handleEventRemove = (removeInfo) => {
+		console.log(removeInfo);
+	};
 }
 
 function renderEventContent(eventInfo) {
@@ -165,4 +188,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { createEvent, getEvents })(Calendar);
+export default connect(mapStateToProps, {
+	createEvent,
+	getEvents,
+	editEvent,
+	deleteEvent,
+})(Calendar);

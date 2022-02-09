@@ -28,7 +28,6 @@ module.exports.createEvent = async (req, res, next) => {
 		const event = req.body;
 		event.komu = await Komu.findById(komuId);
 		const newEvent = new Event(event);
-		console.log(newEvent);
 		newEvent.save();
 		return res.status(200).json(newEvent);
 	} catch (error) {
@@ -53,7 +52,7 @@ module.exports.editEvent = async (req, res, next) => {
 module.exports.deleteEvent = async (req, res, next) => {
 	try {
 		const { eventId } = req.params;
-		const deleteEvent = await Event.findByIdAndDelete(eventId);
+		const deleteEvent = await Event.findByIdAndRemove(eventId);
 		return res.status(200).json(deleteEvent);
 	} catch (error) {
 		console.log(error);
